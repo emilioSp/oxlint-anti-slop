@@ -2,12 +2,11 @@
 
 ## Project overview
 
-Pi extension that implements a open PR on GitHun
+npm library for a oxlint anti-slop plugin.
 
 ## Commands
 
-- `npm test` | Run all tests.
-- `npm run check` | Run lint, type checking and all tests.
+- `npm run check` | Run lint, build and all tests.
 
 ## General principles & rules
 
@@ -81,55 +80,3 @@ The root `README.md` must include at least
 3. How to use it
 
 Bear in mind: the root `README.md` is not a changelog. Document stable user and operator workflows, not every feature.
-
-## Writing style
-
-### Vertical Whitespace & Logical Paragraphs
-
-When writing code, you MUST use vertical whitespace (blank lines) to group related statements into "logical paragraphs". Do not squash all lines of code together.
-- Isolate Control Flow: leave a blank line before and after multi-line `if`, `for`, or `while` blocks.
-- Separate Setup from Execution: leave a blank line after an initial block of variable declarations.
-- Isolate Returns: leave a blank line before the final `return` statement of a function.
-- Group Cohesive Actions: keep consecutive variable declarations or tightly related short statements together without blank lines.
-
-```javascript
-// BAD EXAMPLE -- Too squished
-
-const issues = [...reconciliation.issues];
-if (isRunningPhase(state.phase) && reconciliation.worktreePath !== null) {
-  const handoffPath = getRunningHandoffPath({ ... });
-  if (await pathExists(handoffPath)) {
-    issues.push('Error message');
-  }
-}
-issues.push(...(await getAncestryIssues({ ... })));
-return issues;
-
-// GOOD EXAMPLE -- Proper logical paragraphs
-
-const issues = [...reconciliation.issues];
-
-if (isRunningPhase(state.phase) && reconciliation.worktreePath !== null) {
-  const handoffPath = getRunningHandoffPath({ ... });
-  
-  if (await pathExists(handoffPath)) {
-    issues.push('Error message');
-  }
-}
-
-issues.push(...(await getAncestryIssues({ ... })));
-
-return issues;
-
-// GOOD EXAMPLE -- Grouping related statements is allowed
-
-if (state.phase === WORKFLOW_PHASES.FINAL_REVIEW) {
-  return { ... };
-}
-
-// These two variables are tightly coupled, keep them together
-const reconciliation = await reconcileWorkflow({ paths, state });
-const issues = await detectIssues({ paths, state, reconciliation });
-
-return { ... };
-```

@@ -1,38 +1,102 @@
-import { defineRule } from "@oxlint/plugins";
-import type { ESTree, SourceCode, Variable } from "@oxlint/plugins";
+// Objective: Reject repeated reducer accumulator copies. Used during TypeScript linting.
 
-import {
-  arrayMethodTarget,
-  isKnownArrayExpression,
-  resolveArrayBinding,
-  unwrapArrayExpression,
-} from "#utils/array-method.js";
+import type { ESTree, SourceCode, Variable } from '@oxlint/plugins';
+import { defineRule } from '@oxlint/plugins';
 
-function enclosingReducer(node: ESTree.Node) {
+import { arrayMethodTarget } from '#utils/array-methods/array-method-target.js';
+import { isKnownArrayExpression } from '#utils/array-methods/is-known-array-expression.js';
+import { resolveArrayBinding } from '#utils/array-methods/resolve-array-binding.js';
+import { unwrapArrayExpression } from '#utils/array-methods/unwrap-array-expression.js';
+
+const NODE_TYPES = {
+  functionDeclaration: 'FunctionDeclaration',
+  arrowFunction: 'ArrowFunctionExpression',
+  functionExpression: 'FunctionExpression',
+  callExpression: 'CallExpression',
+  assignmentPattern: 'AssignmentPattern',
+  identifier: 'Identifier',
+  variable: 'Variable',
+  variableDeclarator: 'VariableDeclarator',
+  variableDeclaration: 'VariableDeclaration',
+  objectExpression: 'ObjectExpression',
+} as const;
+
+const METHOD_NAMES = {
+  reduce: 'reduce',
+  reduceRight: 'reduceRight',
+  assign: 'assign',
+  from: 'from',
+  concat: 'concat',
+  slice: 'slice',
+  toSpliced: 'toSpliced',
+  toSorted: 'toSorted',
+  toReversed: 'toReversed',
+  with: 'with',
+} as const;
+
+const REDUCE_METHODS: ReadonlySet<string> = new Set([
+  METHOD_NAMES.reduce,
+  METHOD_NAMES.reduceRight,
+]);
+
+const ARRAY_COPY_METHODS: ReadonlySet<string> = new Set([
+  METHOD_NAMES.concat,
+  METHOD_NAMES.slice,
+  METHOD_NAMES.toSpliced,
+  METHOD_NAMES.toSorted,
+  METHOD_NAMES.toReversed,
+  METHOD_NAMES.with,
+]);
+
+const GLOBAL_COPY_OWNERS = {
+  object: 'Object',
+  array: 'Array',
+} as const;
+
+const MESSAGE_IDS = {
+  accumulatorCopy: 'accumulatorCopy',
+} as const;
+
+const DECLARATION_KINDS = {
+  constant: 'const',
+} as const;
+
+const enclosingReducer = (node: ESTree.Node) => {
   let parent = node.parent;
 
   while (parent !== null) {
-    if (parent.type === "FunctionDeclaration") return null;
+    if (parent.type === NODE_TYPES.functionDeclaration) return null;
 
-    if (parent.type === "ArrowFunctionExpression" || parent.type === "FunctionExpression") {
+    if (
+      parent.type === NODE_TYPES.arrowFunction ||
+      parent.type === NODE_TYPES.functionExpression
+    ) {
       const callback = parent;
       let owner: ESTree.Node | null = callback.parent;
 
-      while (owner !== null && unwrapArrayExpression(owner) === callback) owner = owner.parent;
+      while (owner !== null && unwrapArrayExpression(owner) === callback)
+        owner = owner.parent;
 
-      if (owner?.type !== "CallExpression") return null;
+      if (owner?.type !== NODE_TYPES.callExpression) return null;
       const method = arrayMethodTarget(owner.callee);
       const firstArgument = owner.arguments[0];
 
       if (
-        method === null || (method.name !== "reduce" && method.name !== "reduceRight") ||
-        owner.arguments.length > 2 || firstArgument === undefined ||
+        method === null ||
+        !REDUCE_METHODS.has(method.name) ||
+        owner.arguments.length > 2 ||
+        firstArgument === undefined ||
         unwrapArrayExpression(firstArgument) !== callback
-      ) return null;
+      )
+        return null;
       const firstParameter = callback.params[0];
-      const accumulator = firstParameter?.type === "AssignmentPattern" ? firstParameter.left : firstParameter;
 
-      if (accumulator?.type !== "Identifier") return null;
+      const accumulator =
+        firstParameter?.type === NODE_TYPES.assignmentPattern
+          ? firstParameter.left
+          : firstParameter;
+
+      if (accumulator?.type !== NODE_TYPES.identifier) return null;
 
       return { callback, accumulator, initialValue: owner.arguments[1] };
     }
@@ -41,57 +105,150 @@ function enclosingReducer(node: ESTree.Node) {
   }
 
   return null;
-}
+};
 
-function referencesAccumulator(
-  sourceCode: SourceCode,
-  node: ESTree.Node,
-  accumulator: Variable,
+type ReferencesAccumulatorInput = {
+  readonly sourceCode: SourceCode;
+  readonly node: ESTree.Node;
+  readonly accumulator: Variable;
+  readonly visited?: Set<Variable>;
+};
+
+const referencesAccumulator = ({
+  sourceCode,
+  node: inputNode,
+  accumulator,
   visited = new Set<Variable>(),
-): boolean {
-  const variable = resolveArrayBinding(sourceCode, node);
+}: ReferencesAccumulatorInput): boolean => {
+  const variable = resolveArrayBinding({ sourceCode, node: inputNode });
 
   if (variable === null || visited.has(variable)) return false;
 
   if (variable === accumulator) return true;
   visited.add(variable);
 
-  if (variable.references.some(reference => reference.isWrite() && !reference.init)) return false;
+  if (
+    variable.references.some(
+      (reference) => reference.isWrite() && !reference.init,
+    )
+  )
+    return false;
 
   for (const definition of variable.defs) {
     if (
-      definition.type === "Variable" && definition.node.type === "VariableDeclarator" &&
-      definition.node.id.type === "Identifier" && definition.node.init !== null &&
-      definition.node.parent.type === "VariableDeclaration" && definition.node.parent.kind === "const"
+      definition.type === NODE_TYPES.variable &&
+      definition.node.type === NODE_TYPES.variableDeclarator &&
+      definition.node.id.type === NODE_TYPES.identifier &&
+      definition.node.init !== null &&
+      definition.node.parent.type === NODE_TYPES.variableDeclaration &&
+      definition.node.parent.kind === DECLARATION_KINDS.constant
     ) {
-      return referencesAccumulator(sourceCode, definition.node.init, accumulator, visited);
+      return referencesAccumulator({
+        sourceCode,
+        node: definition.node.init,
+        accumulator,
+        visited,
+      });
     }
   }
 
   return false;
-}
+};
 
-function isGlobalCopyOwner(sourceCode: SourceCode, node: ESTree.Node, name: string): boolean {
-  node = unwrapArrayExpression(node);
+type IsGlobalCopyOwnerInput = {
+  readonly sourceCode: SourceCode;
+  readonly node: ESTree.Node;
+  readonly name: string;
+};
 
-  if (node.type !== "Identifier" || node.name !== name) return false;
-  const variable = resolveArrayBinding(sourceCode, node);
+const isGlobalCopyOwner = ({
+  sourceCode,
+  node: inputNode,
+  name,
+}: IsGlobalCopyOwnerInput): boolean => {
+  const node = unwrapArrayExpression(inputNode);
+
+  if (node.type !== NODE_TYPES.identifier || node.name !== name) return false;
+  const variable = resolveArrayBinding({ sourceCode, node });
 
   return variable === null || variable.defs.length === 0;
-}
+};
+
+type CopiesAccumulatorInput = {
+  readonly method: {
+    readonly name: string;
+    readonly object: ESTree.Node;
+  };
+  readonly node: ESTree.CallExpression;
+  readonly initialValue: ESTree.Node | undefined;
+  readonly sourceCode: SourceCode;
+  readonly isAccumulator: (expression: ESTree.Node) => boolean;
+};
+
+const copiesAccumulator = ({
+  method,
+  node,
+  initialValue,
+  sourceCode,
+  isAccumulator,
+}: CopiesAccumulatorInput): boolean => {
+  if (
+    method.name === METHOD_NAMES.assign &&
+    isGlobalCopyOwner({
+      sourceCode,
+      node: method.object,
+      name: GLOBAL_COPY_OWNERS.object,
+    })
+  ) {
+    const target = node.arguments[0];
+
+    return (
+      target !== undefined &&
+      unwrapArrayExpression(target).type === NODE_TYPES.objectExpression &&
+      node.arguments.slice(1).some(isAccumulator)
+    );
+  }
+
+  if (
+    method.name === METHOD_NAMES.from &&
+    isGlobalCopyOwner({
+      sourceCode,
+      node: method.object,
+      name: GLOBAL_COPY_OWNERS.array,
+    })
+  ) {
+    const source = node.arguments[0];
+
+    return source !== undefined && isAccumulator(source);
+  }
+
+  if (!ARRAY_COPY_METHODS.has(method.name)) {
+    return false;
+  }
+
+  const arrayAccumulator =
+    initialValue !== undefined &&
+    isKnownArrayExpression({ sourceCode, node: initialValue });
+
+  return arrayAccumulator && isAccumulator(method.object);
+};
 
 /** Reject non-spread copies of reducer accumulators; pair with oxc/no-accumulating-spread. */
 export const noReduceAccumulatorCopyRule = defineRule({
   meta: {
-    type: "problem",
-    docs: { description: "Disallow copying growing reducer accumulators with Object.assign, Array.from, or array copy methods." },
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow copying growing reducer accumulators with Object.assign, Array.from, or array copy methods.',
+    },
     messages: {
-      accumulatorCopy: "Do not copy the reducer accumulator on every iteration; growing copies can cause quadratic work. Mutate a fresh, locally owned accumulator and return it, or use an iterator pipeline/flatMap.",
+      [MESSAGE_IDS.accumulatorCopy]:
+        'Do not copy the reducer accumulator on every iteration; growing copies can cause quadratic work. Mutate a fresh, locally owned accumulator and return it, or use an iterator pipeline/flatMap.',
     },
   },
-  createOnce(context) {
+  createOnce: (context) => {
     return {
-      CallExpression(node) {
+      CallExpression: (node) => {
         const method = arrayMethodTarget(node.callee);
 
         if (method === null) return;
@@ -99,36 +256,33 @@ export const noReduceAccumulatorCopyRule = defineRule({
 
         if (reducer === null) return;
 
-        const accumulator = context.sourceCode.getDeclaredVariables(reducer.callback).find(variable =>
-          variable.identifiers.some(identifier => identifier.start === reducer.accumulator.start),
-        );
+        const accumulator = context.sourceCode
+          .getDeclaredVariables(reducer.callback)
+          .find((variable) =>
+            variable.identifiers.some(
+              (identifier) => identifier.start === reducer.accumulator.start,
+            ),
+          );
 
         if (accumulator === undefined) return;
 
         const isAccumulator = (expression: ESTree.Node) =>
-          referencesAccumulator(context.sourceCode, expression, accumulator);
+          referencesAccumulator({
+            sourceCode: context.sourceCode,
+            node: expression,
+            accumulator,
+          });
 
-        let copiesAccumulator = false;
-
-        if (method.name === "assign" && isGlobalCopyOwner(context.sourceCode, method.object, "Object")) {
-          const target = node.arguments[0];
-          copiesAccumulator = (
-            target !== undefined && unwrapArrayExpression(target).type === "ObjectExpression" &&
-            node.arguments.slice(1).some(isAccumulator)
-          );
-        } else if (method.name === "from" && isGlobalCopyOwner(context.sourceCode, method.object, "Array")) {
-          const source = node.arguments[0];
-          copiesAccumulator = source !== undefined && isAccumulator(source);
-        } else if (["concat", "slice", "toSpliced", "toSorted", "toReversed", "with"].includes(method.name)) {
-          const initialValue = reducer.initialValue;
-
-          const arrayAccumulator = initialValue !== undefined &&
-            isKnownArrayExpression(context.sourceCode, initialValue);
-
-          copiesAccumulator = arrayAccumulator && isAccumulator(method.object);
-        }
-
-        if (copiesAccumulator) context.report({ node, messageId: "accumulatorCopy" });
+        if (
+          copiesAccumulator({
+            method,
+            node,
+            initialValue: reducer.initialValue,
+            sourceCode: context.sourceCode,
+            isAccumulator,
+          })
+        )
+          context.report({ node, messageId: MESSAGE_IDS.accumulatorCopy });
       },
     };
   },
