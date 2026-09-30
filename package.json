@@ -5,8 +5,14 @@
   "license": "MIT",
   "type": "module",
   "imports": {
-    "#utils/*": "./utils/*",
-    "#eslint-stylistic/*": "./vendor/eslint-stylistic/*"
+    "#utils/*": {
+      "types": "./utils/*",
+      "default": "./dist/utils/*"
+    },
+    "#eslint-stylistic/*": {
+      "types": "./vendor/eslint-stylistic/*",
+      "default": "./dist/vendor/eslint-stylistic/*"
+    }
   },
   "exports": {
     ".": {
@@ -31,6 +37,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepack": "npm run build",
     "test": "echo ok",
     "check": "npm run lint:fix && npm run build && npm test",
     "prepublishOnly": "npm run check",
