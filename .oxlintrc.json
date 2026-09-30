@@ -13,10 +13,11 @@
   "jsPlugins": [
     {
       "name": "anti-slop",
-      "specifier": "./oxlint/anti-slop/index.ts"
+      "specifier": "./index.ts"
     }
   ],
   "ignorePatterns": [
+    "dist/**",
     ".agent/**",
     ".agents/**",
     ".claude/**",
@@ -28,7 +29,7 @@
     ".pi/**",
     ".roo/**",
     ".windsurf/**",
-    "oxlint/anti-slop/vendor/**"
+    "vendor/**"
   ],
   "rules": {
     "anti-slop/no-reduce-accumulator-copy": "error",

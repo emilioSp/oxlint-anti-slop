@@ -4,7 +4,7 @@ This directory contains the project's custom Oxlint plugin. The plugin is focuse
 
 Biome remains the formatter and general linter. These rules are the project's additional anti-slop policy.
 
-Only rules listed as **active** are registered by `oxlint/anti-slop/index.ts` and enabled in `.oxlintrc.json`. The removed rules remain documented below so the audit decision is not lost.
+Only rules listed as **active** are registered by `index.ts` and enabled in `.oxlintrc.json`. The removed rules remain documented below so the audit decision is not lost.
 
 ## Active rules
 
@@ -30,7 +30,7 @@ The plugin is loaded as a local Oxlint JavaScript plugin:
   "jsPlugins": [
     {
       "name": "anti-slop",
-      "specifier": "./oxlint/anti-slop/index.ts"
+      "specifier": "./index.ts"
     }
   ]
 }

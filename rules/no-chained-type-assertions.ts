@@ -1,45 +1,75 @@
-import { defineRule } from "@oxlint/plugins";
-import type { ESTree } from "@oxlint/plugins";
+// Objective: Reject chained TypeScript assertions. Used during TypeScript linting.
+
+import type { ESTree } from '@oxlint/plugins';
+import { defineRule } from '@oxlint/plugins';
 
 type TypeAssertionExpression = ESTree.TSAsExpression | ESTree.TSTypeAssertion;
 
-function isTypeAssertionExpression(node: ESTree.Node): node is TypeAssertionExpression {
-  return node.type === "TSAsExpression" || node.type === "TSTypeAssertion";
-}
+const NODE_TYPES = {
+  asExpression: 'TSAsExpression',
+  typeAssertion: 'TSTypeAssertion',
+  parenthesizedExpression: 'ParenthesizedExpression',
+  typeReference: 'TSTypeReference',
+  identifier: 'Identifier',
+} as const;
 
-function unwrapParenthesizedExpression(expression: ESTree.Expression): ESTree.Expression {
+const MESSAGE_IDS = {
+  chained: 'chained',
+} as const;
+
+const TYPE_NAMES = {
+  constAssertion: 'const',
+} as const;
+
+const isTypeAssertionExpression = (
+  node: ESTree.Node,
+): node is TypeAssertionExpression => {
+  return (
+    node.type === NODE_TYPES.asExpression ||
+    node.type === NODE_TYPES.typeAssertion
+  );
+};
+
+const unwrapParenthesizedExpression = (
+  expression: ESTree.Expression,
+): ESTree.Expression => {
   let current = expression;
 
-  while (current.type === "ParenthesizedExpression") {
+  while (current.type === NODE_TYPES.parenthesizedExpression) {
     current = current.expression;
   }
 
   return current;
-}
+};
 
-function isConstAssertion(node: TypeAssertionExpression): boolean {
+const isConstAssertion = (node: TypeAssertionExpression): boolean => {
   const { typeAnnotation } = node;
 
   return (
-    typeAnnotation.type === "TSTypeReference" &&
-    typeAnnotation.typeName.type === "Identifier" &&
-    typeAnnotation.typeName.name === "const"
+    typeAnnotation.type === NODE_TYPES.typeReference &&
+    typeAnnotation.typeName.type === NODE_TYPES.identifier &&
+    typeAnnotation.typeName.name === TYPE_NAMES.constAssertion
   );
-}
+};
 
-function isOutermostAssertionInChain(node: TypeAssertionExpression): boolean {
+const isOutermostAssertionInChain = (
+  node: TypeAssertionExpression,
+): boolean => {
   let current: ESTree.Expression = node;
   let parent = node.parent;
 
-  while (parent.type === "ParenthesizedExpression" && parent.expression === current) {
+  while (
+    parent.type === NODE_TYPES.parenthesizedExpression &&
+    parent.expression === current
+  ) {
     current = parent;
     parent = parent.parent;
   }
 
   return !isTypeAssertionExpression(parent) || parent.expression !== current;
-}
+};
 
-function isForbiddenAssertionChain(node: TypeAssertionExpression): boolean {
+const isForbiddenAssertionChain = (node: TypeAssertionExpression): boolean => {
   let assertionCount = 0;
   let hasNonConstAssertion = false;
   let current: ESTree.Expression = node;
@@ -51,25 +81,29 @@ function isForbiddenAssertionChain(node: TypeAssertionExpression): boolean {
   }
 
   return assertionCount > 1 && hasNonConstAssertion;
-}
+};
 
 /** Disallow nested TypeScript type assertions, while permitting chains made only of const assertions. */
 export const noChainedTypeAssertionsRule = defineRule({
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
       description:
-        "Disallow chained TypeScript as and angle-bracket assertions, including parenthesized chains.",
+        'Disallow chained TypeScript as and angle-bracket assertions, including parenthesized chains.',
     },
     messages: {
-      chained:
-        "Do not chain type assertions. Keep the original type, or validate external input with a named type guard before using the domain type.",
+      [MESSAGE_IDS.chained]:
+        'Do not chain type assertions. Keep the original type, or validate external input with a named type guard before using the domain type.',
     },
   },
-  createOnce(context) {
+  createOnce: (context) => {
     const checkTypeAssertion = (node: TypeAssertionExpression) => {
-      if (!isOutermostAssertionInChain(node) || !isForbiddenAssertionChain(node)) return;
-      context.report({ node, messageId: "chained" });
+      if (
+        !isOutermostAssertionInChain(node) ||
+        !isForbiddenAssertionChain(node)
+      )
+        return;
+      context.report({ node, messageId: MESSAGE_IDS.chained });
     };
 
     return {

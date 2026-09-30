@@ -5,8 +5,18 @@
   "license": "MIT",
   "type": "module",
   "imports": {
-    "#utils/*": "./utils/*",
-    "#eslint-stylistic/*": "./vendor/eslint-stylistic/*"
+    "#utils/*": {
+      "types": "./utils/*",
+      "default": "./dist/utils/*"
+    },
+    "#rules/*": {
+      "types": "./rules/*",
+      "default": "./dist/rules/*"
+    },
+    "#eslint-stylistic/*": {
+      "types": "./vendor/eslint-stylistic/*",
+      "default": "./dist/vendor/eslint-stylistic/*"
+    }
   },
   "exports": {
     ".": {
@@ -22,7 +32,9 @@
   "bugs": {
     "url": "https://github.com/emilioSp/oxlint-anti-slop/issues"
   },
-  "keywords": ["TODO"],
+  "keywords": [
+    "TODO"
+  ],
   "files": [
     "dist"
   ],
@@ -31,20 +43,24 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepack": "npm run build",
     "test": "echo ok",
     "check": "npm run lint:fix && npm run build && npm test",
     "prepublishOnly": "npm run check",
     "publish:npm": "npm publish --access public",
     "lint": "biome check .",
-    "lint:anti-slop": "oxlint --fix",
+    "lint:anti-slop": "npm run build && oxlint --fix",
     "lint:fix": "biome check --write . && npm run lint:anti-slop"
   },
   "dependencies": {
-    "@oxlint/plugins": "1.86.0",
-    "oxlint": "1.86.0"
+    "@oxlint/plugins": "1.86.0"
+  },
+  "peerDependencies": {
+    "oxlint": ">=1.86.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
+    "oxlint": "1.86.0",
     "@types/node": "26.6.1",
     "typescript": "7.0.2",
     "vitest": "5.0.1"
