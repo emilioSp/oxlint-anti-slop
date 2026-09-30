@@ -6,7 +6,7 @@ import {
   isKnownArrayExpression,
   resolveArrayBinding,
   unwrapArrayExpression,
-} from "#/utils/array-method.ts";
+} from "#utils/array-method.js";
 
 function enclosingReducer(node: ESTree.Node) {
   let parent = node.parent;

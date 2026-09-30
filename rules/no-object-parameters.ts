@@ -5,12 +5,12 @@ import type { ESTree } from "@oxlint/plugins";
 import {
 	functionParameterBindingName,
 	functionParameterTypeAnnotation,
-} from "../utils/function-parameters.ts";
+} from "../utils/function-parameters.js";
 import {
 	createTypeAliasEnvironment,
 	resolvedTypeMatches,
 	type TypeAliasEnvironment,
-} from "../utils/type-alias-resolution.ts";
+} from "../utils/type-alias-resolution.js";
 
 type ParameterOwner =
 	| ESTree.ArrowFunctionExpression

@@ -9,7 +9,7 @@ import type {
   RuleOptions,
   SelectorOption,
   StatementOption,
-} from './padding-line-options.d.ts'
+} from './padding-line-options.js'
 import {
   isClosingBraceToken,
   isFunction,
@@ -21,7 +21,7 @@ import {
   isTopLevelExpressionStatement,
   LINEBREAKS,
   skipChainExpression,
-} from './padding-line-ast.ts'
+} from './padding-line-ast.js'
 
 const CJS_EXPORT = /^(?:module\s*\.\s*)?exports(?:\s*\.|\s*\[|$)/u
 

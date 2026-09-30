@@ -1,6 +1,6 @@
 import type { CreateRule } from "@oxlint/plugins";
 
-import createPaddingLineRule from "#eslint-stylistic/padding-line-between-statements.ts";
+import createPaddingLineRule from "#eslint-stylistic/padding-line-between-statements.js";
 
 const paddingRule = createPaddingLineRule([
   { blankLine: "always", prev: "import", next: "*" },

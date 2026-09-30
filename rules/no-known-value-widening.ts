@@ -7,13 +7,13 @@ import {
 	isKnownEvidenceExpression,
 	type TypeEnvironment,
 	type WideningTarget,
-} from "../utils/dictionary-types.ts";
+} from "../utils/dictionary-types.js";
 import {
 	containsUnknownType,
 	functionParameterBindingName,
 	functionParameterTypeAnnotation,
-} from "../utils/function-parameters.ts";
-import { resolveVariable } from "../utils/scope.ts";
+} from "../utils/function-parameters.js";
+import { resolveVariable } from "../utils/scope.js";
 
 import type { ESTree, SourceCode, Variable } from "@oxlint/plugins";
 
