@@ -1,15 +1,15 @@
 import { eslintCompatPlugin } from "@oxlint/plugins";
 
-import { noReduceAccumulatorCopyRule } from "./rules/no-reduce-accumulator-copy.ts";
-import { noChainedTypeAssertionsRule } from "./rules/no-chained-type-assertions.ts";
-import { noKnownValueWideningRule } from "./rules/no-known-value-widening.ts";
-import { noObjectParametersRule } from "./rules/no-object-parameters.ts";
-import { noRuntimeTypeofRule } from "./rules/no-runtime-typeof.ts";
-import { noUnknownTypeAliasesRule } from "./rules/no-unknown-type-aliases.ts";
-import { noUnsafeDictionaryTypeRule } from "./rules/no-unsafe-dictionary-type.ts";
-import { noWidenThenAssertRule } from "./rules/no-widen-then-assert.ts";
-import { requireReadableSpacingRule } from "./rules/require-readable-spacing.ts";
-import { requireJustificationCommentForTypeAssertionRule } from "./rules/require-justification-comment-for-type-assertion.ts";
+import { noReduceAccumulatorCopyRule } from "./rules/no-reduce-accumulator-copy.js";
+import { noChainedTypeAssertionsRule } from "./rules/no-chained-type-assertions.js";
+import { noKnownValueWideningRule } from "./rules/no-known-value-widening.js";
+import { noObjectParametersRule } from "./rules/no-object-parameters.js";
+import { noRuntimeTypeofRule } from "./rules/no-runtime-typeof.js";
+import { noUnknownTypeAliasesRule } from "./rules/no-unknown-type-aliases.js";
+import { noUnsafeDictionaryTypeRule } from "./rules/no-unsafe-dictionary-type.js";
+import { noWidenThenAssertRule } from "./rules/no-widen-then-assert.js";
+import { requireReadableSpacingRule } from "./rules/require-readable-spacing.js";
+import { requireJustificationCommentForTypeAssertionRule } from "./rules/require-justification-comment-for-type-assertion.js";
 
 /** Generic Oxlint rules that reject low-evidence and low-signal implementation patterns. */
 const antiSlopPlugin = eslintCompatPlugin({
