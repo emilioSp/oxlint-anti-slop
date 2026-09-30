@@ -9,6 +9,10 @@
       "types": "./utils/*",
       "default": "./dist/utils/*"
     },
+    "#rules/*": {
+      "types": "./rules/*",
+      "default": "./dist/rules/*"
+    },
     "#eslint-stylistic/*": {
       "types": "./vendor/eslint-stylistic/*",
       "default": "./dist/vendor/eslint-stylistic/*"

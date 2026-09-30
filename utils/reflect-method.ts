@@ -1,4 +1,4 @@
-import { resolveVariable } from "./scope.js";
+import { resolveVariable } from "#utils/scope.js";
 
 import type { ESTree, SourceCode } from "@oxlint/plugins";
 

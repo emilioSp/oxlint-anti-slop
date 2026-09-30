@@ -5,8 +5,8 @@ import {
 	classifyUnsafeDictionaryValue,
 	createTypeEnvironment,
 	type TypeEnvironment,
-} from "../utils/dictionary-types.js";
-import { visibleTypeAlias } from "../utils/type-alias-resolution.js";
+} from "#utils/dictionary-types.js";
+import { visibleTypeAlias } from "#utils/type-alias-resolution.js";
 
 import type { ESTree } from "@oxlint/plugins";
 

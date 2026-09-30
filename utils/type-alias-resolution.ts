@@ -1,6 +1,6 @@
 import type { ESTree } from "@oxlint/plugins";
 
-import { lexicalTypeParameterNames } from "./lexical-type-parameters.js";
+import { lexicalTypeParameterNames } from "#utils/lexical-type-parameters.js";
 
 type VisitorKeys = Readonly<Record<string, readonly string[]>>;
 

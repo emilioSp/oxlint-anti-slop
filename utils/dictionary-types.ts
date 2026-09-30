@@ -5,7 +5,7 @@ import {
 	hasVisibleTypeBinding,
 	visibleTypeAlias,
 	type TypeAliasEnvironment as LexicalTypeAliasEnvironment,
-} from "./type-alias-resolution.js";
+} from "#utils/type-alias-resolution.js";
 
 const BUILT_INS = new Set([
 	"Record",
