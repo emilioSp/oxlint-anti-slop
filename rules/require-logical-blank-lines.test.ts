@@ -1,8 +1,8 @@
-// Objective: Verify runtime typeof diagnostics. Used when testing no-runtime-typeof.
+// Objective: Verify logical blank-line diagnostics. Used when testing require-logical-blank-lines.
 
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'no-runtime-typeof';
+const RULE_NAME = 'require-logical-blank-lines';
 
 testRule({
   ruleName: RULE_NAME,

@@ -838,7 +838,7 @@ const reportAssertionFlow = ({
 };
 
 /** Detect sound syntactic cases where a known value is explicitly widened and loses evidence. */
-export const noKnownValueWideningRule = defineRule({
+export const noUnnecessaryTypeWideningRule = defineRule({
   meta: {
     type: 'problem',
     docs: {

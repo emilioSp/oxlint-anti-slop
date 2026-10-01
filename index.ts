@@ -2,28 +2,27 @@
 
 import { eslintCompatPlugin } from '@oxlint/plugins';
 import { noChainedTypeAssertionsRule } from '#rules/no-chained-type-assertions.js';
-import { noKnownValueWideningRule } from '#rules/no-known-value-widening.js';
+import { noMeaninglessUnknownAliasesRule } from '#rules/no-meaningless-unknown-aliases.js';
+import { noNarrowingAfterWideningRule } from '#rules/no-narrowing-after-widening.js';
 import { noObjectParametersRule } from '#rules/no-object-parameters.js';
 import { noReduceAccumulatorCopyRule } from '#rules/no-reduce-accumulator-copy.js';
-import { noRuntimeTypeofRule } from '#rules/no-runtime-typeof.js';
-import { noUnknownTypeAliasesRule } from '#rules/no-unknown-type-aliases.js';
-import { noUnsafeDictionaryTypeRule } from '#rules/no-unsafe-dictionary-type.js';
-import { noWidenThenAssertRule } from '#rules/no-widen-then-assert.js';
-import { requireJustificationCommentForTypeAssertionRule } from '#rules/require-justification-comment-for-type-assertion.js';
-import { requireReadableSpacingRule } from '#rules/require-readable-spacing.js';
+import { noTypeofOutsideGuardsRule } from '#rules/no-typeof-outside-guards.js';
+import { noUnnecessaryTypeWideningRule } from '#rules/no-unnecessary-type-widening.js';
+import { noUnsafeDictionaryValuesRule } from '#rules/no-unsafe-dictionary-values.js';
+import { requireLogicalBlankLinesRule } from '#rules/require-logical-blank-lines.js';
+import { requireTypeAssertionJustificationRule } from '#rules/require-type-assertion-justification.js';
 
 const RULE_NAMES = {
   noReduceAccumulatorCopy: 'no-reduce-accumulator-copy',
   noChainedTypeAssertions: 'no-chained-type-assertions',
-  noKnownValueWidening: 'no-known-value-widening',
+  noUnnecessaryTypeWidening: 'no-unnecessary-type-widening',
   noObjectParameters: 'no-object-parameters',
-  noRuntimeTypeof: 'no-runtime-typeof',
-  noUnsafeDictionaryType: 'no-unsafe-dictionary-type',
-  noUnknownTypeAliases: 'no-unknown-type-aliases',
-  noWidenThenAssert: 'no-widen-then-assert',
-  requireReadableSpacing: 'require-readable-spacing',
-  requireJustificationCommentForTypeAssertion:
-    'require-justification-comment-for-type-assertion',
+  noTypeofOutsideGuards: 'no-typeof-outside-guards',
+  noUnsafeDictionaryValues: 'no-unsafe-dictionary-values',
+  noMeaninglessUnknownAliases: 'no-meaningless-unknown-aliases',
+  noNarrowingAfterWidening: 'no-narrowing-after-widening',
+  requireLogicalBlankLines: 'require-logical-blank-lines',
+  requireTypeAssertionJustification: 'require-type-assertion-justification',
 } as const;
 
 /** Generic Oxlint rules that reject low-evidence and low-signal implementation patterns. */
@@ -32,15 +31,15 @@ const antiSlopPlugin = eslintCompatPlugin({
   rules: {
     [RULE_NAMES.noReduceAccumulatorCopy]: noReduceAccumulatorCopyRule,
     [RULE_NAMES.noChainedTypeAssertions]: noChainedTypeAssertionsRule,
-    [RULE_NAMES.noKnownValueWidening]: noKnownValueWideningRule,
+    [RULE_NAMES.noUnnecessaryTypeWidening]: noUnnecessaryTypeWideningRule,
     [RULE_NAMES.noObjectParameters]: noObjectParametersRule,
-    [RULE_NAMES.noRuntimeTypeof]: noRuntimeTypeofRule,
-    [RULE_NAMES.noUnsafeDictionaryType]: noUnsafeDictionaryTypeRule,
-    [RULE_NAMES.noUnknownTypeAliases]: noUnknownTypeAliasesRule,
-    [RULE_NAMES.noWidenThenAssert]: noWidenThenAssertRule,
-    [RULE_NAMES.requireReadableSpacing]: requireReadableSpacingRule,
-    [RULE_NAMES.requireJustificationCommentForTypeAssertion]:
-      requireJustificationCommentForTypeAssertionRule,
+    [RULE_NAMES.noTypeofOutsideGuards]: noTypeofOutsideGuardsRule,
+    [RULE_NAMES.noUnsafeDictionaryValues]: noUnsafeDictionaryValuesRule,
+    [RULE_NAMES.noMeaninglessUnknownAliases]: noMeaninglessUnknownAliasesRule,
+    [RULE_NAMES.noNarrowingAfterWidening]: noNarrowingAfterWideningRule,
+    [RULE_NAMES.requireLogicalBlankLines]: requireLogicalBlankLinesRule,
+    [RULE_NAMES.requireTypeAssertionJustification]:
+      requireTypeAssertionJustificationRule,
   },
 });
 

@@ -18,7 +18,7 @@ const MESSAGE_IDS = {
 } as const;
 
 /** Ban named aliases that merely conceal TypeScript's unknown top type. */
-export const noUnknownTypeAliasesRule = defineRule({
+export const noMeaninglessUnknownAliasesRule = defineRule({
   meta: {
     type: 'problem',
     docs: {

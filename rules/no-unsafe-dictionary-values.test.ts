@@ -1,8 +1,8 @@
-// Objective: Verify unsafe dictionary diagnostics. Used when testing no-unsafe-dictionary-type.
+// Objective: Verify unsafe dictionary value diagnostics. Used when testing no-unsafe-dictionary-values.
 
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'no-unsafe-dictionary-type';
+const RULE_NAME = 'no-unsafe-dictionary-values';
 
 testRule({
   ruleName: RULE_NAME,

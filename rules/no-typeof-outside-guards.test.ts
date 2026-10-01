@@ -1,8 +1,8 @@
-// Objective: Verify widen-then-assert diagnostics. Used when testing no-widen-then-assert.
+// Objective: Verify typeof outside guard diagnostics. Used when testing no-typeof-outside-guards.
 
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'no-widen-then-assert';
+const RULE_NAME = 'no-typeof-outside-guards';
 
 testRule({
   ruleName: RULE_NAME,

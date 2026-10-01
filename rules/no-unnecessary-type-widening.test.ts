@@ -1,8 +1,8 @@
-// Objective: Verify unknown type alias diagnostics. Used when testing no-unknown-type-aliases.
+// Objective: Verify unnecessary type widening diagnostics. Used when testing no-unnecessary-type-widening.
 
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'no-unknown-type-aliases';
+const RULE_NAME = 'no-unnecessary-type-widening';
 
 testRule({
   ruleName: RULE_NAME,
