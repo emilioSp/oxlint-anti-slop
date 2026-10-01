@@ -1,4 +1,18 @@
-const value: object = { name: 'value' };
-const namedValue = value as { name: string };
+type Job = {
+  id: string;
+  queue: string;
+};
 
-void namedValue;
+declare const job: Job;
+
+const jobPayload: object = {
+  jobId: job.id,
+  queue: job.queue,
+  retries: 0,
+};
+
+export const payload = jobPayload as {
+  jobId: string;
+  queue: string;
+  retries: number;
+};

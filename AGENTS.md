@@ -83,7 +83,13 @@ Bear in mind: the root `README.md` is not a changelog. Document stable user and 
 
 ## Task History & Repository State
 
-The repository history and task state are maintained in GitHub PRs. Rebuild task context before executing work:
+GitHub PRs can provide useful context about earlier work, but this lookup is optional. Use it when the current task needs historical context:
 
-1. Run `gh pr view --json body` to retrieve the PR description.
-2. Extract and parse the YAML payload under the `Agents read here` section to read prior changes, task history, and instructions.
+1. Identify the relative paths of the files involved in the task.
+2. Search PR descriptions on GitHub for an exact file path using the `in:body` qualifier. For example:
+   `path='rules/example.ts'; gh pr list --state all --search "\"$path\" in:body" --limit 5 --json number,title,url`
+3. Read matching PRs with `gh pr view <number> --json body,title,state,mergedAt`.
+4. If a body contains an `Agents read here` section, extract and parse its YAML payload.
+5. Use the result with the repository files and git history. If no matching PR exists, or the GitHub CLI is unavailable, continue without PR history.
+
+Search the full relative path first because PR descriptions list modified files. Search only the basename if the full path returns no matches. Do not call `gh pr view --json body` without a PR number as a required step. That form only works when the current branch has an associated PR and fails on branches such as `main`.

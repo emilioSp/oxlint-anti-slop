@@ -1,5 +1,12 @@
-function first(): number {
-  return 1;
-}
+import { invoiceRepository } from '#billing/invoice-repository';
+import { sendInvoice } from '#billing/send-invoice';
 
-const second = 2;
+type Invoice = {
+  id: string;
+  recipient: string;
+};
+
+export async function sendInvoiceById(invoiceId: string): Promise<void> {
+  const invoice = await invoiceRepository.find(invoiceId);
+  await sendInvoice(invoice);
+}
