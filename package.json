@@ -16,7 +16,8 @@
     "#eslint-stylistic/*": {
       "types": "./vendor/eslint-stylistic/*",
       "default": "./dist/vendor/eslint-stylistic/*"
-    }
+    },
+    "#test/*": "./tests/*.ts"
   },
   "exports": {
     ".": {
@@ -44,7 +45,7 @@
   "scripts": {
     "build": "tsc",
     "prepack": "npm run build",
-    "test": "echo ok",
+    "test": "npm run build && vitest run",
     "check": "npm run lint:fix && npm run build && npm test",
     "prepublishOnly": "npm run check",
     "publish:npm": "npm publish --access public",

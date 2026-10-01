@@ -18,6 +18,7 @@
   ],
   "ignorePatterns": [
     "dist/**",
+    "tests/fixtures/**",
     ".agent/**",
     ".agents/**",
     ".claude/**",
