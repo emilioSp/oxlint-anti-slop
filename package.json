@@ -1,6 +1,6 @@
 {
   "name": "oxlint-anti-slop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Oxlint anti slop plugin",
   "license": "MIT",
   "type": "module",
