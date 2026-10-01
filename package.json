@@ -1,5 +1,5 @@
 {
-  "name": "@emiliosp/oxlint-anti-slop",
+  "name": "oxlint-anti-slop",
   "version": "0.1.0",
   "description": "Oxlint anti slop plugin",
   "license": "MIT",
