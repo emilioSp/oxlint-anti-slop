@@ -1,8 +1,8 @@
-// Objective: Verify readable spacing diagnostics. Used when testing require-readable-spacing.
+// Objective: Verify narrowing-after-widening diagnostics. Used when testing no-narrowing-after-widening.
 
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'require-readable-spacing';
+const RULE_NAME = 'no-narrowing-after-widening';
 
 testRule({
   ruleName: RULE_NAME,

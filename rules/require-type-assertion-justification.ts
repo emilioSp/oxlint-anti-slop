@@ -154,7 +154,7 @@ const hasJustificationComment = ({
 };
 
 /** Require every non-const type assertion to state the invariant TypeScript cannot express. */
-export const requireJustificationCommentForTypeAssertionRule = defineRule({
+export const requireTypeAssertionJustificationRule = defineRule({
   meta: {
     type: 'problem',
     docs: {

@@ -77,7 +77,7 @@ const isExistenceProbe = (node: ESTree.UnaryExpression): boolean => {
 };
 
 /** Disallow runtime typeof checks that narrow unparsed values instead of decoding them. */
-export const noRuntimeTypeofRule = defineRule({
+export const noTypeofOutsideGuardsRule = defineRule({
   meta: {
     type: 'problem',
     docs: {

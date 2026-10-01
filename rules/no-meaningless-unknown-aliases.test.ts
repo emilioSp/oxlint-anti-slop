@@ -1,8 +1,8 @@
-// Objective: Verify type assertion justification diagnostics. Used when testing require-justification-comment-for-type-assertion.
+// Objective: Verify meaningless unknown alias diagnostics. Used when testing no-meaningless-unknown-aliases.
 
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'require-justification-comment-for-type-assertion';
+const RULE_NAME = 'no-meaningless-unknown-aliases';
 
 testRule({
   ruleName: RULE_NAME,
