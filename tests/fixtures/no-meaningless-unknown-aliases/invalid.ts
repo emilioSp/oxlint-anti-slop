@@ -1,4 +1,9 @@
-type UnknownValue = unknown;
+type IncomingWebhookBody = unknown;
 
-const value: UnknownValue = 'value';
-void value;
+declare const processWebhook: (body: unknown) => Promise<void>;
+
+export async function handleWebhook(
+  body: IncomingWebhookBody,
+): Promise<void> {
+  await processWebhook(body);
+}

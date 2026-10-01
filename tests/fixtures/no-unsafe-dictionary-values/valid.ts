@@ -1,6 +1,15 @@
-type Values = {
-  [key: string]: string;
+type TenantSettings = {
+  timezone: string;
+  invoicePrefix: string;
 };
 
-const values: Values = {};
-void values;
+declare function loadTenantSettings(): Promise<Record<string, TenantSettings>>;
+
+export async function loadSettingsByTenant(): Promise<
+  Record<string, TenantSettings>
+> {
+  const settingsByTenant: Record<string, TenantSettings> =
+    await loadTenantSettings();
+
+  return settingsByTenant;
+}

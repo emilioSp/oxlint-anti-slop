@@ -1,5 +1,5 @@
-function parse(value: object): object {
-  return value;
-}
+import { emailQueue } from '#infrastructure/email-queue';
 
-void parse;
+export async function queueInvoiceEmail(invoice: object): Promise<void> {
+  await emailQueue.add('invoice-ready', invoice);
+}

@@ -1,5 +1,13 @@
-function parse(value: { name: string }): { name: string } {
-  return value;
-}
+import { emailQueue } from '#infrastructure/email-queue';
 
-void parse;
+type InvoiceEmail = {
+  invoiceId: string;
+  recipient: string;
+  locale: string;
+};
+
+export async function queueInvoiceEmail(
+  invoice: InvoiceEmail,
+): Promise<void> {
+  await emailQueue.add('invoice-ready', invoice);
+}
