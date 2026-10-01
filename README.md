@@ -4,7 +4,7 @@ An npm plugin for [Oxlint](https://oxc.rs/docs/guide/usage/linter/) that helps c
 
 > The model is smart, but to achieve quality alongside the product you need a harness.
 
-## The idea 💡
+## 💡 The idea
 
 AI coding agents can write code quickly. They can also add unnecessary assertions and choose implementations that are hard to review and understand.
 
@@ -12,12 +12,12 @@ oxlint-anti-slop combats AI slop with strict rules. Each rule is deterministic. 
 
 The plugin is based on Oxlint and adds a small set of strict rules for TypeScript code.
 
-## Prerequisites 📋
+## 📋 Prerequisites
 
 - Node.js 26 or newer
 - Oxlint 1.86 or newer
 
-## Install 📦
+## 📦 Install
 
 Install Oxlint and the plugin as development dependencies:
 
@@ -45,7 +45,7 @@ You can add the command to `package.json`:
 
 Oxlint uses `.oxlintrc.json` as its default JSON configuration filename. If you use that filename instead of `oxlint.json`, you can run `npx oxlint .` without `--config`.
 
-## Configuration ⚙️
+## ⚙️ Configuration
 
 Create `oxlint.json` in the project root with the complete plugin configuration:
 
@@ -87,7 +87,7 @@ A rule can be set to `error`, `warn`, or `off`:
 }
 ```
 
-## Available rules 🧰
+## 🧰 Available rules
 
 | Rule | Enforces |
 | --- | --- |
@@ -104,7 +104,7 @@ A rule can be set to `error`, `warn`, or `off`:
 
 The list above is the complete list of rules currently provided by the plugin.
 
-## Rule details 🔎
+## 🔎 Rule details
 
 ### `no-chained-type-assertions`
 
@@ -422,6 +422,6 @@ export async function sendInvoiceById(invoiceId: string): Promise<void> {
 
 Add the blank line that separates the logical groups. Do not use a suppression to keep unrelated statements together.
 
-## License 📄
+## 📄 License
 
 MIT
