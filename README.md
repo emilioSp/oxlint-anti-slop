@@ -87,6 +87,15 @@ A rule can be set to `error`, `warn`, or `off`:
 }
 ```
 
+Use an inline comment to define an intentional exception.
+
+```ts
+// oxlint-disable-next-line anti-slop/no-object-parameters
+export function parseLegacyPayload(value: object): object {
+  return value;
+}
+```
+
 ## 🧰 Available rules
 
 | Rule | Enforces |
