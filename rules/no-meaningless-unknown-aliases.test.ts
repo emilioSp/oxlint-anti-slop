@@ -9,5 +9,14 @@ testRule({
   fixtures: [
     { name: 'invalid', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'valid', expectedCode: null },
+    { name: 'unknown-union', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'parenthesized-unknown', expectedCode: `anti-slop(${RULE_NAME})` },
+    {
+      name: 'generic-alias-instantiation',
+      expectedCode: `anti-slop(${RULE_NAME})`,
+    },
+    { name: 'unknown-property', expectedCode: null },
+    { name: 'unknown-array', expectedCode: null },
+    { name: 'unknown-intersection', expectedCode: null },
   ],
 });
