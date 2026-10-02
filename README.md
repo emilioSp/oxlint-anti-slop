@@ -1,6 +1,6 @@
 # oxlint-anti-slop
 
-Opinionated [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) rules for AI-assisted TypeScript development. Catch unsafe assertion patterns, unnecessary type widening, and costly accumulator copies, with diagnostics that explain how to fix them.
+Opinionated [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) rules for AI-assisted TypeScript development. Enforce explicit coding standards with actionable diagnostics that explain what to change and why.
 
 ## A quick example
 
