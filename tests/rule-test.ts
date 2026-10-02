@@ -24,7 +24,7 @@ const CATEGORIES = {
 } as const;
 
 type Fixture = {
-  readonly name: 'invalid' | 'valid';
+  readonly name: string;
   readonly expectedCode: string | null;
 };
 
@@ -127,7 +127,7 @@ export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
     });
 
     for (const fixture of fixtures) {
-      it(`${fixture.name} fixture has the expected diagnostics`, async () => {
+      it(`${fixture.name}: ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
         if (configPath === null)
           throw new Error('Oxlint configuration was not created');
 

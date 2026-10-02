@@ -8,6 +8,17 @@ testRule({
   ruleName: RULE_NAME,
   fixtures: [
     { name: 'invalid', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'valid', expectedCode: null },
+    { name: 'parenthesized-chain', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'angle-bracket-chain', expectedCode: `anti-slop(${RULE_NAME})` },
+    {
+      name: 'triple-chain-reported-once',
+      expectedCode: `anti-slop(${RULE_NAME})`,
+    },
+    {
+      name: 'const-then-domain-assertion',
+      expectedCode: `anti-slop(${RULE_NAME})`,
+    },
+    { name: 'const-assertion', expectedCode: null },
+    { name: 'independent-assertions', expectedCode: null },
   ],
 });

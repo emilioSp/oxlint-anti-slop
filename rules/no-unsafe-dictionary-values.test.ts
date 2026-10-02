@@ -9,5 +9,18 @@ testRule({
   fixtures: [
     { name: 'invalid', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'valid', expectedCode: null },
+    { name: 'object-value', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'empty-object-value', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'unsafe-union-value', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'generic-alias-value', expectedCode: `anti-slop(${RULE_NAME})` },
+    {
+      name: 'interface-index-signature',
+      expectedCode: `anti-slop(${RULE_NAME})`,
+    },
+    { name: 'mapped-type-value', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'unknown-value', expectedCode: null },
+    { name: 'never-value', expectedCode: null },
+    { name: 'generic-constraint', expectedCode: null },
+    { name: 'shadowed-record', expectedCode: null },
   ],
 });
