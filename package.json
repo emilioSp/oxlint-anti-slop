@@ -34,7 +34,15 @@
     "url": "https://github.com/emilioSp/oxlint-anti-slop/issues"
   },
   "keywords": [
-    "TODO"
+    "oxlint",
+    "oxlint-plugin",
+    "typescript",
+    "linter",
+    "linting",
+    "static-analysis",
+    "code-quality",
+    "ai-assisted-development",
+    "anti-slop"
   ],
   "files": [
     "dist"
