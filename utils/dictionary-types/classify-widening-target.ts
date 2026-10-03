@@ -107,7 +107,7 @@ export const classifyWideningTarget = ({
           });
 
     return resolved?.kind === WIDENING_TARGET_KINDS.openDictionary
-      ? { kind: 'generic container' }
+      ? { kind: WIDENING_TARGET_KINDS.genericContainer }
       : null;
   }
 

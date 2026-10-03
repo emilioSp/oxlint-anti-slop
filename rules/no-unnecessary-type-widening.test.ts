@@ -1,14 +1,18 @@
 // Objective: Verify unnecessary type widening diagnostics. Used when testing no-unnecessary-type-widening.
 
+import { RULE_NAMES } from '#rules/rule-names.js';
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'no-unnecessary-type-widening';
+const RULE_NAME = RULE_NAMES.noUnnecessaryTypeWidening;
 
 testRule({
   ruleName: RULE_NAME,
   fixtures: [
-    { name: 'invalid', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'valid', expectedCode: null },
+    {
+      name: 'generic-dictionary-widening',
+      expectedCode: `anti-slop(${RULE_NAME})`,
+    },
+    { name: 'named-domain-type', expectedCode: null },
     {
       name: 'known-object-to-unknown',
       expectedCode: `anti-slop(${RULE_NAME})`,

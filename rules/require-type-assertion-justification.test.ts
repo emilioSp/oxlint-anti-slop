@@ -1,14 +1,18 @@
 // Objective: Verify type assertion justification diagnostics. Used when testing require-type-assertion-justification.
 
+import { RULE_NAMES } from '#rules/rule-names.js';
 import { testRule } from '#test/rule-test';
 
-const RULE_NAME = 'require-type-assertion-justification';
+const RULE_NAME = RULE_NAMES.requireTypeAssertionJustification;
 
 testRule({
   ruleName: RULE_NAME,
   fixtures: [
-    { name: 'invalid', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'valid', expectedCode: null },
+    {
+      name: 'unjustified-type-assertion',
+      expectedCode: `anti-slop(${RULE_NAME})`,
+    },
+    { name: 'justified-type-assertion', expectedCode: null },
     { name: 'const-assertion', expectedCode: null },
     { name: 'satisfies-contract', expectedCode: null },
     { name: 'block-comment-on-export', expectedCode: null },
