@@ -7,8 +7,8 @@ import { dictionaryValueTypes } from '#utils/dictionary-types/dictionary-value-t
 import {
   type TypeEnvironment,
   UNSAFE_DICTIONARY_VALUES,
-  type UnsafeDictionary,
   type UnsafeDictionaryOptions,
+  type UnsafeDictionaryValue,
 } from '#utils/dictionary-types/types.js';
 
 type ClassifyUnsafeDictionaryInput = {
@@ -22,7 +22,7 @@ export const classifyUnsafeDictionary = ({
   type,
   environment,
   options = { allowUnknown: false },
-}: ClassifyUnsafeDictionaryInput): UnsafeDictionary | null => {
+}: ClassifyUnsafeDictionaryInput): UnsafeDictionaryValue | null => {
   const valueTypes = dictionaryValueTypes({
     type,
     environment,
@@ -46,7 +46,7 @@ export const classifyUnsafeDictionary = ({
       continue;
     }
 
-    return { unsafeValue };
+    return unsafeValue;
   }
 
   return null;

@@ -92,9 +92,8 @@ export type UnsafeDictionaryOptions = {
   readonly allowUnknown: boolean;
 };
 
-export type UnsafeDictionary = {
-  readonly unsafeValue: (typeof UNSAFE_DICTIONARY_VALUES)[keyof typeof UNSAFE_DICTIONARY_VALUES];
-};
+export type UnsafeDictionaryValue =
+  (typeof UNSAFE_DICTIONARY_VALUES)[keyof typeof UNSAFE_DICTIONARY_VALUES];
 
 export type WideningTargetKind =
   (typeof WIDENING_TARGET_KINDS)[keyof typeof WIDENING_TARGET_KINDS];

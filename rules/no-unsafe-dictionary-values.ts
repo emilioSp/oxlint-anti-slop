@@ -8,7 +8,7 @@ import { createTypeEnvironment } from '#utils/dictionary-types/create-type-envir
 import { typeReferenceName } from '#utils/dictionary-types/type-reference-name.js';
 import type {
   TypeEnvironment,
-  UnsafeDictionary,
+  UnsafeDictionaryValue,
 } from '#utils/dictionary-types/types.js';
 import { visibleTypeAlias } from '#utils/type-alias-resolution/visible-type-alias.js';
 
@@ -100,7 +100,7 @@ type ReportableDictionaryInput = {
 const reportableDictionary = ({
   node,
   environment,
-}: ReportableDictionaryInput): UnsafeDictionary | null => {
+}: ReportableDictionaryInput): UnsafeDictionaryValue | null => {
   if (isInsideTypeParameterConstraint(node)) return null;
 
   if (isPlainAliasConsumerUse({ node, environment })) return null;
@@ -164,7 +164,7 @@ export const noUnsafeDictionaryValuesRule = defineRule({
       const unsafe = reportableDictionary({ node, environment });
 
       if (unsafe === null) return;
-      report({ node, value: unsafe.unsafeValue });
+      report({ node, value: unsafe });
     };
 
     return {
@@ -191,7 +191,7 @@ export const noUnsafeDictionaryValuesRule = defineRule({
           options: DICTIONARY_CLASSIFICATION_OPTIONS,
         });
 
-        if (unsafe !== null) report({ node, value: unsafe.unsafeValue });
+        if (unsafe !== null) report({ node, value: unsafe });
       },
     };
   },

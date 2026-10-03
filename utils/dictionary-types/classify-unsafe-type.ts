@@ -14,8 +14,8 @@ import {
   TRANSPARENT_WRAPPERS,
   type TypeEnvironment,
   UNSAFE_DICTIONARY_VALUES,
-  type UnsafeDictionary,
   type UnsafeDictionaryOptions,
+  type UnsafeDictionaryValue,
 } from '#utils/dictionary-types/types.js';
 import { unwrapTransparentType } from '#utils/dictionary-types/unwrap-transparent-type.js';
 import { visibleTypeAlias } from '#utils/type-alias-resolution/visible-type-alias.js';
@@ -35,7 +35,7 @@ export const classifyUnsafeType = ({
   substitutions,
   resolvingAliases,
   options,
-}: ClassifyUnsafeTypeInput): UnsafeDictionary['unsafeValue'] | null => {
+}: ClassifyUnsafeTypeInput): UnsafeDictionaryValue | null => {
   const unwrapped = unwrapTransparentType(type);
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.unknownKeyword)
@@ -65,10 +65,7 @@ export const classifyUnsafeType = ({
       }),
     );
 
-    if (
-      options.allowUnknown &&
-      unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.any)
-    )
+    if (unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.any))
       return UNSAFE_DICTIONARY_VALUES.union;
 
     if (
@@ -154,7 +151,7 @@ export const classifyUnsafeType = ({
 
   if (interfaceDeclarations !== undefined) {
     return isEffectivelyEmptyInterface(interfaceDeclarations)
-      ? 'empty-object'
+      ? UNSAFE_DICTIONARY_VALUES.emptyObject
       : null;
   }
 
