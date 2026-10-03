@@ -1,7 +1,7 @@
 {
   "name": "oxlint-anti-slop",
   "version": "0.3.0",
-  "description": "Oxlint anti slop plugin",
+  "description": "Opinionated Oxlint rules for safer, clearer TypeScript in AI-assisted codebases.",
   "license": "MIT",
   "type": "module",
   "imports": {
