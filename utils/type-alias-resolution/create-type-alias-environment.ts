@@ -92,23 +92,19 @@ type CollectTypeBindingsInput = {
   readonly node: ESTree.Node;
   readonly visitorKeys: VisitorKeys;
   readonly bindingsByName: Map<string, TypeBinding[]>;
-  readonly aliases: ESTree.TSTypeAliasDeclaration[];
 };
 
 const collectTypeBindings = ({
   node,
   visitorKeys,
   bindingsByName,
-  aliases,
 }: CollectTypeBindingsInput): void => {
   const declared = declaredTypeBinding(node);
 
   if (declared !== null) {
     const bindings = bindingsByName.get(declared.name) ?? [];
-    bindings.push({ ...declared, scope: enclosingTypeScope(node) });
+    bindings.push({ alias: declared.alias, scope: enclosingTypeScope(node) });
     bindingsByName.set(declared.name, bindings);
-
-    if (declared.alias !== null) aliases.push(declared.alias);
   }
 
   const unknownNode: unknown = node;
@@ -124,7 +120,6 @@ const collectTypeBindings = ({
         node: value,
         visitorKeys,
         bindingsByName,
-        aliases,
       });
       continue;
     }
@@ -137,7 +132,6 @@ const collectTypeBindings = ({
           node: child,
           visitorKeys,
           bindingsByName,
-          aliases,
         });
     }
   }
@@ -157,9 +151,8 @@ export const createTypeAliasEnvironment = ({
 
   if (cached !== undefined) return cached;
   const bindingsByName = new Map<string, TypeBinding[]>();
-  const aliases: ESTree.TSTypeAliasDeclaration[] = [];
-  collectTypeBindings({ node: program, visitorKeys, bindingsByName, aliases });
-  const environment = { aliases, bindingsByName, visitorKeys };
+  collectTypeBindings({ node: program, visitorKeys, bindingsByName });
+  const environment = { bindingsByName, visitorKeys };
   environmentsByProgram.set(program, environment);
 
   return environment;

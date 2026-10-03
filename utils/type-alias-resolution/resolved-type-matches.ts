@@ -1,6 +1,7 @@
 // Objective: Match types after resolving visible aliases and parameters. Used by type-aware rules.
 
 import type { ESTree } from '@oxlint/plugins';
+import { typeReferenceName } from '#utils/dictionary-types/type-reference-name.js';
 import type {
   ResolvedTypeMatcher,
   TypeAliasEnvironment,
@@ -15,15 +16,8 @@ type Substitution = {
 type Substitutions = ReadonlyMap<string, Substitution>;
 
 const NODE_TYPES = {
-  identifier: 'Identifier',
   typeReference: 'TSTypeReference',
 } as const;
-
-const typeReferenceName = (type: ESTree.TSTypeReference): string | null => {
-  return type.typeName.type === NODE_TYPES.identifier
-    ? type.typeName.name
-    : null;
-};
 
 type AliasSubstitutionsInput = {
   readonly alias: ESTree.TSTypeAliasDeclaration;

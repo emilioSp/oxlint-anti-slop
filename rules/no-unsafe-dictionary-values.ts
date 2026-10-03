@@ -6,7 +6,10 @@ import { classifyUnsafeDictionary } from '#utils/dictionary-types/classify-unsaf
 import { classifyUnsafeDictionaryValue } from '#utils/dictionary-types/classify-unsafe-dictionary-value.js';
 import { createTypeEnvironment } from '#utils/dictionary-types/create-type-environment.js';
 import { typeReferenceName } from '#utils/dictionary-types/type-reference-name.js';
-import type { TypeEnvironment } from '#utils/dictionary-types/types.js';
+import type {
+  TypeEnvironment,
+  UnsafeDictionary,
+} from '#utils/dictionary-types/types.js';
 import { visibleTypeAlias } from '#utils/type-alias-resolution/visible-type-alias.js';
 
 const MESSAGE_IDS = {
@@ -20,85 +23,19 @@ const NODE_TYPES = {
   typeLiteral: 'TSTypeLiteral',
   typeReference: 'TSTypeReference',
   mappedType: 'TSMappedType',
-  indexSignature: 'TSIndexSignature',
-  jsDocNonNullableType: 'JSDocNonNullableType',
-  jsDocNullableType: 'JSDocNullableType',
-  jsDocUnknownType: 'JSDocUnknownType',
-  anyKeyword: 'TSAnyKeyword',
-  arrayType: 'TSArrayType',
-  bigintKeyword: 'TSBigIntKeyword',
-  booleanKeyword: 'TSBooleanKeyword',
-  conditionalType: 'TSConditionalType',
-  constructorType: 'TSConstructorType',
-  functionType: 'TSFunctionType',
-  importType: 'TSImportType',
-  indexedAccessType: 'TSIndexedAccessType',
-  inferType: 'TSInferType',
-  intersectionType: 'TSIntersectionType',
-  intrinsicKeyword: 'TSIntrinsicKeyword',
-  literalType: 'TSLiteralType',
-  namedTupleMember: 'TSNamedTupleMember',
-  neverKeyword: 'TSNeverKeyword',
-  nullKeyword: 'TSNullKeyword',
-  numberKeyword: 'TSNumberKeyword',
-  objectKeyword: 'TSObjectKeyword',
   parenthesizedType: 'TSParenthesizedType',
-  stringKeyword: 'TSStringKeyword',
-  symbolKeyword: 'TSSymbolKeyword',
-  templateLiteralType: 'TSTemplateLiteralType',
-  thisType: 'TSThisType',
-  tupleType: 'TSTupleType',
   typeOperator: 'TSTypeOperator',
-  typePredicate: 'TSTypePredicate',
-  typeQuery: 'TSTypeQuery',
-  undefinedKeyword: 'TSUndefinedKeyword',
-  unionType: 'TSUnionType',
-  unknownKeyword: 'TSUnknownKeyword',
-  voidKeyword: 'TSVoidKeyword',
 } as const;
 
-const TYPE_NODE_KINDS: ReadonlySet<string> = new Set([
-  NODE_TYPES.jsDocNonNullableType,
-  NODE_TYPES.jsDocNullableType,
-  NODE_TYPES.jsDocUnknownType,
-  NODE_TYPES.anyKeyword,
-  NODE_TYPES.arrayType,
-  NODE_TYPES.bigintKeyword,
-  NODE_TYPES.booleanKeyword,
-  NODE_TYPES.conditionalType,
-  NODE_TYPES.constructorType,
-  NODE_TYPES.functionType,
-  NODE_TYPES.importType,
-  NODE_TYPES.indexedAccessType,
-  NODE_TYPES.inferType,
-  NODE_TYPES.intersectionType,
-  NODE_TYPES.intrinsicKeyword,
-  NODE_TYPES.literalType,
-  NODE_TYPES.mappedType,
-  NODE_TYPES.namedTupleMember,
-  NODE_TYPES.neverKeyword,
-  NODE_TYPES.nullKeyword,
-  NODE_TYPES.numberKeyword,
-  NODE_TYPES.objectKeyword,
-  NODE_TYPES.parenthesizedType,
-  NODE_TYPES.stringKeyword,
-  NODE_TYPES.symbolKeyword,
-  NODE_TYPES.templateLiteralType,
-  NODE_TYPES.thisType,
-  NODE_TYPES.tupleType,
-  NODE_TYPES.typeLiteral,
-  NODE_TYPES.typeOperator,
-  NODE_TYPES.typePredicate,
-  NODE_TYPES.typeQuery,
-  NODE_TYPES.typeReference,
-  NODE_TYPES.undefinedKeyword,
-  NODE_TYPES.unionType,
-  NODE_TYPES.unknownKeyword,
-  NODE_TYPES.voidKeyword,
-]);
-
-const isTypeNode = (node: ESTree.Node): node is ESTree.TSType => {
-  return TYPE_NODE_KINDS.has(node.type);
+// Only dictionary shapes and their transparent wrappers can classify as dictionaries.
+const isDictionaryTypeNode = (node: ESTree.Node): node is ESTree.TSType => {
+  return (
+    node.type === NODE_TYPES.typeReference ||
+    node.type === NODE_TYPES.typeLiteral ||
+    node.type === NODE_TYPES.mappedType ||
+    node.type === NODE_TYPES.parenthesizedType ||
+    node.type === NODE_TYPES.typeOperator
+  );
 };
 
 const isInsideTypeAliasDeclaration = (node: ESTree.Node): boolean => {
@@ -155,43 +92,42 @@ const isInsideTypeParameterConstraint = (node: ESTree.TSType): boolean => {
   return false;
 };
 
-type ShouldReportTypeInput = {
+type ReportableDictionaryInput = {
   readonly node: ESTree.TSType;
   readonly environment: TypeEnvironment;
 };
 
-const shouldReportType = ({
+const reportableDictionary = ({
   node,
   environment,
-}: ShouldReportTypeInput): boolean => {
-  if (isInsideTypeParameterConstraint(node)) return false;
+}: ReportableDictionaryInput): UnsafeDictionary | null => {
+  if (isInsideTypeParameterConstraint(node)) return null;
 
-  if (isPlainAliasConsumerUse({ node, environment })) return false;
+  if (isPlainAliasConsumerUse({ node, environment })) return null;
 
-  if (
-    classifyUnsafeDictionary({
-      type: node,
-      environment,
-      options: DICTIONARY_CLASSIFICATION_OPTIONS,
-    }) === null
-  )
-    return false;
+  const unsafe = classifyUnsafeDictionary({
+    type: node,
+    environment,
+    options: DICTIONARY_CLASSIFICATION_OPTIONS,
+  });
+
+  if (unsafe === null) return null;
   let current: ESTree.Node | null = node.parent;
 
   while (current !== null && current.type !== NODE_TYPES.program) {
     if (
-      isTypeNode(current) &&
+      isDictionaryTypeNode(current) &&
       classifyUnsafeDictionary({
         type: current,
         environment,
         options: DICTIONARY_CLASSIFICATION_OPTIONS,
       }) !== null
     )
-      return false;
+      return null;
     current = current.parent;
   }
 
-  return true;
+  return unsafe;
 };
 
 /** Disallow object-dictionary contracts whose direct value type is an unsafe escape hatch. */
@@ -224,14 +160,8 @@ export const noUnsafeDictionaryValuesRule = defineRule({
     };
 
     const reportIfUnsafe = (node: ESTree.TSType) => {
-      if (environment === null || !shouldReportType({ node, environment }))
-        return;
-
-      const unsafe = classifyUnsafeDictionary({
-        type: node,
-        environment,
-        options: DICTIONARY_CLASSIFICATION_OPTIONS,
-      });
+      if (environment === null) return;
+      const unsafe = reportableDictionary({ node, environment });
 
       if (unsafe === null) return;
       report({ node, value: unsafe.unsafeValue });

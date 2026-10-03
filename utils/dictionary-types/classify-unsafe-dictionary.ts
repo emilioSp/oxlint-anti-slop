@@ -5,7 +5,6 @@ import type { ESTree } from '@oxlint/plugins';
 import { classifyUnsafeType } from '#utils/dictionary-types/classify-unsafe-type.js';
 import { dictionaryValueTypes } from '#utils/dictionary-types/dictionary-value-types.js';
 import {
-  DICTIONARY_KINDS,
   type TypeEnvironment,
   UNSAFE_DICTIONARY_VALUES,
   type UnsafeDictionary,
@@ -47,7 +46,7 @@ export const classifyUnsafeDictionary = ({
       continue;
     }
 
-    return { kind: DICTIONARY_KINDS.unsafeDictionary, unsafeValue };
+    return { unsafeValue };
   }
 
   return null;

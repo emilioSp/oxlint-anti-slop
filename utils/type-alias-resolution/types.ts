@@ -6,12 +6,10 @@ export type VisitorKeys = Readonly<Record<string, readonly string[]>>;
 
 export type TypeBinding = {
   readonly alias: ESTree.TSTypeAliasDeclaration | null;
-  readonly name: string;
   readonly scope: ESTree.Node;
 };
 
 export type TypeAliasEnvironment = {
-  readonly aliases: readonly ESTree.TSTypeAliasDeclaration[];
   readonly bindingsByName: ReadonlyMap<string, readonly TypeBinding[]>;
   readonly visitorKeys: VisitorKeys;
 };

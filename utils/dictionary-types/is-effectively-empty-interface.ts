@@ -14,7 +14,6 @@ export const isEffectivelyEmptyInterface = (
   return (
     type !== undefined &&
     type.extends.length === 0 &&
-    (type.body.body.length === 0 ||
-      type.body.body.every(isEffectivelyEmptyMember))
+    type.body.body.every(isEffectivelyEmptyMember)
   );
 };

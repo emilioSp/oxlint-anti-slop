@@ -28,8 +28,6 @@ const MESSAGE_IDS = {
 } as const;
 
 const NODE_TYPES = {
-  asExpression: 'TSAsExpression',
-  typeAssertion: 'TSTypeAssertion',
   typeReference: 'TSTypeReference',
   identifier: 'Identifier',
   expressionStatement: 'ExpressionStatement',

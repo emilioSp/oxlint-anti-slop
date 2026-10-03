@@ -1,8 +1,9 @@
 // Objective: Resolve array-analysis identifiers to lexical bindings. Used by array evidence checks.
 
-import type { ESTree, Scope, SourceCode, Variable } from '@oxlint/plugins';
+import type { ESTree, SourceCode, Variable } from '@oxlint/plugins';
 
 import { unwrapArrayExpression } from '#utils/array-methods/unwrap-array-expression.js';
+import { resolveVariable } from '#utils/scope/resolve-variable.js';
 
 const NODE_TYPES = {
   identifier: 'Identifier',
@@ -21,14 +22,6 @@ export const resolveArrayBinding = ({
   const node = unwrapArrayExpression(inputNode);
 
   if (node.type !== NODE_TYPES.identifier) return null;
-  let scope: Scope | null = sourceCode.getScope(node);
 
-  while (scope !== null) {
-    const variable = scope.set.get(node.name);
-
-    if (variable !== undefined) return variable;
-    scope = scope.upper;
-  }
-
-  return null;
+  return resolveVariable({ sourceCode, identifier: node });
 };

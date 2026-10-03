@@ -342,7 +342,8 @@ const hasKnownCallArgumentEvidence = ({
 }: HasKnownCallArgumentEvidenceInput): boolean => {
   if (
     expression.type === NODE_TYPES.parenthesizedExpression ||
-    expression.type === NODE_TYPES.nonNullExpression
+    expression.type === NODE_TYPES.nonNullExpression ||
+    expression.type === NODE_TYPES.satisfiesExpression
   ) {
     return hasKnownCallArgumentEvidence({
       sourceCode,
@@ -359,15 +360,6 @@ const hasKnownCallArgumentEvidence = ({
     return hasInformativeType({
       type: expression.typeAnnotation,
       environment,
-    });
-  }
-
-  if (expression.type === NODE_TYPES.satisfiesExpression) {
-    return hasKnownCallArgumentEvidence({
-      sourceCode,
-      expression: expression.expression,
-      environment,
-      visitedVariables,
     });
   }
 
@@ -560,23 +552,6 @@ const createReportFlow = ({
       data: { subject, target: destination.kind },
     });
   };
-};
-
-type InitializeEnvironmentInput = {
-  readonly context: Context;
-  readonly state: WideningRuleState;
-  readonly node: ESTree.Program;
-};
-
-const initializeEnvironment = ({
-  context,
-  state,
-  node,
-}: InitializeEnvironmentInput): void => {
-  state.environment = createTypeEnvironment({
-    program: node,
-    visitorKeys: context.sourceCode.visitorKeys,
-  });
 };
 
 type ReportVariableFlowInput = {
@@ -856,8 +831,12 @@ export const noUnnecessaryTypeWideningRule = defineRule({
     const services: WideningRuleServices = { context, state, reportFlow };
 
     return {
-      Program: (node: ESTree.Program) =>
-        initializeEnvironment({ context, state, node }),
+      Program: (node: ESTree.Program) => {
+        state.environment = createTypeEnvironment({
+          program: node,
+          visitorKeys: context.sourceCode.visitorKeys,
+        });
+      },
       VariableDeclarator: (node: ESTree.VariableDeclarator) =>
         reportVariableFlow({ node, services }),
       PropertyDefinition: (node: ESTree.PropertyDefinition) =>

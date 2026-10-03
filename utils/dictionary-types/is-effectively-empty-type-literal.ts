@@ -8,7 +8,5 @@ import { isEffectivelyEmptyMember } from '#utils/dictionary-types/is-effectively
 export const isEffectivelyEmptyTypeLiteral = (
   type: ESTree.TSTypeLiteral,
 ): boolean => {
-  return (
-    type.members.length === 0 || type.members.every(isEffectivelyEmptyMember)
-  );
+  return type.members.every(isEffectivelyEmptyMember);
 };

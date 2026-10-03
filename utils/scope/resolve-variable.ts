@@ -4,7 +4,7 @@ import type { ESTree, Scope, SourceCode, Variable } from '@oxlint/plugins';
 
 type ResolveVariableInput = {
   readonly sourceCode: SourceCode;
-  readonly identifier: ESTree.IdentifierReference;
+  readonly identifier: ESTree.Node & { readonly name: string };
 };
 
 /** Resolve an identifier to its binding by walking lexical scopes upward. */

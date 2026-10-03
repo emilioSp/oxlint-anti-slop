@@ -43,18 +43,11 @@ export const DICTIONARY_NODE_TYPES = {
   propertySignature: 'TSPropertySignature',
   identifier: 'Identifier',
   arrayExpression: 'ArrayExpression',
-  callExpression: 'CallExpression',
-  variable: 'Variable',
-  variableDeclarator: 'VariableDeclarator',
-  variableDeclaration: 'VariableDeclaration',
   parenthesizedExpression: 'ParenthesizedExpression',
-  chainExpression: 'ChainExpression',
   asExpression: 'TSAsExpression',
   typeAssertion: 'TSTypeAssertion',
   nonNullExpression: 'TSNonNullExpression',
   satisfiesExpression: 'TSSatisfiesExpression',
-  arrayType: 'TSArrayType',
-  tupleType: 'TSTupleType',
   typeOperator: 'TSTypeOperator',
   literal: 'Literal',
   arrowFunction: 'ArrowFunctionExpression',
@@ -99,12 +92,7 @@ export type UnsafeDictionaryOptions = {
   readonly allowUnknown: boolean;
 };
 
-export const DICTIONARY_KINDS = {
-  unsafeDictionary: 'unsafe-dictionary',
-} as const;
-
 export type UnsafeDictionary = {
-  readonly kind: (typeof DICTIONARY_KINDS)[keyof typeof DICTIONARY_KINDS];
   readonly unsafeValue: (typeof UNSAFE_DICTIONARY_VALUES)[keyof typeof UNSAFE_DICTIONARY_VALUES];
 };
 
