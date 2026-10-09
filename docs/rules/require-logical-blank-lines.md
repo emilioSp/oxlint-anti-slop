@@ -43,6 +43,6 @@ export async function sendInvoiceById(invoiceId: string): Promise<void> {
 }
 ```
 
-Add the blank line that separates the logical groups. Do not use a suppression to keep unrelated statements together.
+Add the blank line that separates the logical groups.
 
 [Back to available rules](../../README.md#available-rules)
