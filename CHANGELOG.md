@@ -2,9 +2,16 @@
 
 ## Unreleased
 
+## 0.3.6
+
+1. Enabled native Oxlint rules for constant bindings, unnecessary `else` branches, type aliases instead of interfaces, and CommonJS restrictions in the repository configuration.
+2. Added `vitest/valid-title` with the `given ... when ... then ...` format for `it()` and `test()`. Dynamic `describe()` names remain allowed.
+3. Added a suggested README configuration that combines native Oxlint rules with all anti-slop rules.
+4. Recorded discovery task R-06 to assess whether Oxlint can replace Biome. Biome remains in use.
+
 ## 0.3.5
 
-Added standalone mission, tech stack, roadmap, and changelog documents in the current working tree.
+Added standalone mission, tech stack, roadmap, and changelog documents.
 
 Removed guidance against blank-line suppressions from the rule documentation. Rule behavior did not change. Evidence: [ce99674](https://github.com/emilioSp/oxlint-anti-slop/commit/ce996740d9d2f222cd4e377e115a17512407c7eb).
 
