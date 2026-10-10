@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.3.1
+## 0.3.5
 
 Added standalone mission, tech stack, roadmap, and changelog documents in the current working tree.
 
