@@ -112,6 +112,83 @@ export function parseLegacyPayload(value: object): object {
 }
 ```
 
+### Suggested configuration
+
+This optional configuration combines all anti-slop rules with five native Oxlint rules. The native rules are separate from this plugin.
+
+All native categories are set to `off`, so only the listed rules are enabled. Adjust `ignorePatterns` to match your project.
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "off",
+    "nursery": "off",
+    "pedantic": "off",
+    "perf": "off",
+    "restriction": "off",
+    "style": "off",
+    "suspicious": "off"
+  },
+  "plugins": ["typescript", "import", "vitest"],
+  "jsPlugins": [
+    {
+      "name": "anti-slop",
+      "specifier": "oxlint-anti-slop"
+    }
+  ],
+  "ignorePatterns": [
+    "dist/**",
+    "tests/fixtures/**",
+    ".agent/**",
+    ".agents/**",
+    ".claude/**",
+    ".codex/**",
+    ".continue/**",
+    ".cursor/**",
+    ".gemini/**",
+    ".opencode/**",
+    ".pi/**",
+    ".roo/**",
+    ".windsurf/**",
+    "vendor/**"
+  ],
+  "rules": {
+    "vitest/valid-title": [
+      "error",
+      {
+        "ignoreTypeOfDescribeName": true,
+        "mustMatch": {
+          "it": "^given .+ when .+ then .+$",
+          "test": "^given .+ when .+ then .+$"
+        }
+      }
+    ],
+    "prefer-const": "error",
+    "no-else-return": ["error", { "allowElseIf": false }],
+    "typescript/consistent-type-definitions": ["error", "type"],
+    "import/no-commonjs": [
+      "error",
+      {
+        "allowConditionalRequire": false,
+        "allowPrimitiveModules": false,
+        "allowRequire": false
+      }
+    ],
+    "anti-slop/no-reduce-accumulator-copy": "error",
+    "anti-slop/no-chained-type-assertions": "error",
+    "anti-slop/no-unnecessary-type-widening": "error",
+    "anti-slop/no-object-parameters": "error",
+    "anti-slop/no-typeof-outside-guards": "error",
+    "anti-slop/no-meaningless-unknown-aliases": "error",
+    "anti-slop/no-unsafe-dictionary-values": "error",
+    "anti-slop/no-narrowing-after-widening": "error",
+    "anti-slop/require-logical-blank-lines": "error",
+    "anti-slop/require-type-assertion-justification": "error"
+  }
+}
+```
+
 <a id="available-rules"></a>
 
 ## 🧰 Available rules

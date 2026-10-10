@@ -53,3 +53,11 @@ Permit `in` inside type guards and assertion functions. Reject it elsewhere. Det
 ### R-05: Reject inline object types in function parameters
 
 Require named types instead of inline object types in function parameters. Exact scope and framework exceptions remain open.
+
+### R-06: Assess whether Oxlint can fully replace Biome
+
+Discovery means research before a change decision. Compare Oxlint with the linting, formatting, and import organization enabled in [biome.json](biome.json).
+
+Include file coverage, automatic fixes, and the checks used by [npm scripts](package.json). Distinguish Oxlint alone from a solution that requires additional tools.
+
+Completion: Record supported capabilities, remaining gaps, and a recommendation for the owner. This task does not remove Biome or change dependencies, configuration, or scripts.
