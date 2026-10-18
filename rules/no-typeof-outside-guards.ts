@@ -27,14 +27,7 @@ const MESSAGE_IDS = {
   runtimeTypeof: 'runtimeTypeof',
 } as const;
 
-const EXISTENCE_OPERATOR_NAMES = {
-  strictEqual: '===',
-  strictNotEqual: '!==',
-  looseEqual: '==',
-  looseNotEqual: '!=',
-} as const;
-
-const EXISTENCE_OPERATORS: ReadonlySet<string> = new Set(Object.values(EXISTENCE_OPERATOR_NAMES));
+const EXISTENCE_OPERATORS: ReadonlySet<string> = new Set(['===', '!==', '==', '!=']);
 
 const isRuntimeFunction = (node: ESTree.Node): node is RuntimeFunction => {
   return (
