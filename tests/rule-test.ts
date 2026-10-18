@@ -29,11 +29,6 @@ type Fixture = {
   readonly expectedCode: string | null;
 };
 
-type RuleTestInput = {
-  readonly ruleName: string;
-  readonly fixtures: readonly Fixture[];
-};
-
 type OxlintDiagnostic = {
   readonly code?: string;
 };
@@ -62,13 +57,12 @@ type RunResult = {
 const isNumericExitCode = (value: number | string | undefined): value is number =>
   Number.isInteger(value);
 
-const runOxlint = async ({
-  configPath,
-  fixturePath,
-}: {
+type RunOxlintInput = {
   readonly configPath: string;
   readonly fixturePath: string;
-}): Promise<RunResult> => {
+};
+
+const runOxlint = async ({ configPath, fixturePath }: RunOxlintInput): Promise<RunResult> => {
   try {
     const { stdout } = await execFileAsync(
       OXLINT_PATH,
@@ -90,18 +84,22 @@ const runOxlint = async ({
   }
 };
 
-const createConfig = ({
-  ruleName,
-  pluginPath,
-}: {
+type CreateConfigInput = {
   readonly ruleName: string;
   readonly pluginPath: string;
-}) =>
+};
+
+const createConfig = ({ ruleName, pluginPath }: CreateConfigInput) =>
   JSON.stringify({
     categories: CATEGORIES,
     jsPlugins: [{ name: 'anti-slop', specifier: pluginPath }],
     rules: { [`anti-slop/${ruleName}`]: 'error' },
   });
+
+type RuleTestInput = {
+  readonly ruleName: string;
+  readonly fixtures: readonly Fixture[];
+};
 
 /** Define CLI integration tests for one rule and its versioned fixtures. */
 export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
@@ -126,7 +124,7 @@ export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
     });
 
     for (const fixture of fixtures) {
-      it(`${fixture.name}: ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
+      it(`given ${fixture.name} when the rule runs then it ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
         if (configPath === null) throw new Error('Oxlint configuration was not created');
 
         const fixturePath = resolve(PROJECT_ROOT, 'tests/fixtures', ruleName, `${fixture.name}.ts`);

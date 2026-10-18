@@ -312,13 +312,6 @@ const variableDeclarator = (variable: Variable): ESTree.VariableDeclarator | nul
   return null;
 };
 
-type KnownValueEvidenceInput = {
-  readonly expression: ESTree.Expression;
-  readonly scopes: readonly Scope[];
-  readonly boundary: ESTree.Node | null;
-  readonly visitedVariables: ReadonlySet<Variable>;
-};
-
 type KnownValueEvidenceForAnnotationInput = {
   readonly variable: Variable;
   readonly boundary: ESTree.Node | null;
@@ -390,6 +383,13 @@ const knownValueEvidenceForIdentifier = ({
   });
 };
 
+type KnownValueEvidenceInput = {
+  readonly expression: ESTree.Expression;
+  readonly scopes: readonly Scope[];
+  readonly boundary: ESTree.Node | null;
+  readonly visitedVariables: ReadonlySet<Variable>;
+};
+
 const knownValueEvidence = ({
   expression,
   scopes,
@@ -429,11 +429,6 @@ const knownValueEvidence = ({
   });
 };
 
-type WidenedBindingInput = {
-  readonly variable: Variable;
-  readonly scopes: readonly Scope[];
-};
-
 type WidenedBinding = {
   readonly broadKind: BroadTypeKind;
   readonly evidence: KnownValueEvidence;
@@ -463,6 +458,11 @@ const stableConstantDeclarator = ({
   return declarator;
 };
 
+type WidenedBindingInput = {
+  readonly variable: Variable;
+  readonly scopes: readonly Scope[];
+};
+
 const widenedBinding = ({ variable, scopes }: WidenedBindingInput): WidenedBinding | null => {
   const declarator = stableConstantDeclarator({ variable });
 
@@ -472,13 +472,12 @@ const widenedBinding = ({ variable, scopes }: WidenedBindingInput): WidenedBindi
 
   if (initializer === null) return null;
 
-  const boundary = functionBoundary(declarator);
-  const declaredType = declarator.id.typeAnnotation?.typeAnnotation;
   const initializerAssertion = assertionFromExpression(initializer);
 
   const initializerBroadKind =
     initializerAssertion === null ? null : broadTypeKind(initializerAssertion.typeAnnotation);
 
+  const declaredType = declarator.id.typeAnnotation?.typeAnnotation;
   const declaredBroadKind = declaredType === undefined ? null : broadTypeKind(declaredType);
 
   const broadKind = declaredBroadKind ?? initializerBroadKind;
@@ -489,6 +488,8 @@ const widenedBinding = ({ variable, scopes }: WidenedBindingInput): WidenedBindi
     initializerAssertion !== null && initializerBroadKind !== null
       ? assertedExpression(initializerAssertion)
       : initializer;
+
+  const boundary = functionBoundary(declarator);
 
   const evidence = knownValueEvidence({
     expression: originalExpression,
