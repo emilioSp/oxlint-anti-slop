@@ -54,10 +54,11 @@
     "build": "tsc",
     "prepack": "npm run build",
     "test": "npm run build && vitest run",
-    "check": "npm run lint:fix && npm run build && npm test",
+    "check": "npm run fmt && npm run lint && npm run build && npm test",
     "prepublishOnly": "npm run check",
     "publish:npm": "npm publish --access public",
-    "lint": "biome check .",
+    "fmt": "oxfmt",
+    "lint": "oxlint --fix",
     "lint:anti-slop": "npm run build && oxlint --fix",
     "lint:fix": "biome check --write . && npm run lint:anti-slop"
   },
@@ -68,7 +69,6 @@
     "oxlint": ">=1.86.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
     "oxlint": "1.86.0",
     "@types/node": "26.6.1",
     "typescript": "7.0.2",

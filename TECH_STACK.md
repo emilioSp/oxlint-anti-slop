@@ -21,8 +21,8 @@ The [TypeScript configuration](tsconfig.json) uses strict checking, NodeNext mod
 
 | Technology | Role |
 | --- | --- |
-| Biome | Formatting, import organization, and general lint checks. |
-| Oxlint | Applies the plugin rules to this repository. |
+| Oxfmt | Formatting |
+| Oxlint | Linting |
 | Vitest | Integration tests that invoke the Oxlint command against scenario fixtures. |
 | `@types/node` | Node.js types used during compilation. |
 | GitHub Actions | Builds and tests on pushes and pull requests to `main`, with Node.js 26 on Ubuntu. |
