@@ -62,45 +62,42 @@ const DECLARATION_KINDS = {
 } as const;
 
 const enclosingReducer = (node: ESTree.Node) => {
-  let parent = node.parent;
+  let callback = node.parent;
 
-  while (parent !== null) {
-    if (parent.type === NODE_TYPES.functionDeclaration) return null;
-
-    if (parent.type === NODE_TYPES.arrowFunction || parent.type === NODE_TYPES.functionExpression) {
-      const callback = parent;
-      let owner: ESTree.Node | null = callback.parent;
-
-      while (owner !== null && unwrapArrayExpression(owner) === callback) owner = owner.parent;
-
-      if (owner?.type !== NODE_TYPES.callExpression) return null;
-      const method = arrayMethodTarget(owner.callee);
-      const firstArgument = owner.arguments[0];
-
-      if (
-        method === null ||
-        !REDUCE_METHODS.has(method.name) ||
-        owner.arguments.length > 2 ||
-        firstArgument === undefined ||
-        unwrapArrayExpression(firstArgument) !== callback
-      )
-        return null;
-      const firstParameter = callback.params[0];
-
-      const accumulator =
-        firstParameter?.type === NODE_TYPES.assignmentPattern
-          ? firstParameter.left
-          : firstParameter;
-
-      if (accumulator?.type !== NODE_TYPES.identifier) return null;
-
-      return { callback, accumulator, initialValue: owner.arguments[1] };
-    }
-
-    parent = parent.parent;
+  while (
+    callback !== null &&
+    callback.type !== NODE_TYPES.functionDeclaration &&
+    callback.type !== NODE_TYPES.arrowFunction &&
+    callback.type !== NODE_TYPES.functionExpression
+  ) {
+    callback = callback.parent;
   }
 
-  return null;
+  if (callback === null || callback.type === NODE_TYPES.functionDeclaration) return null;
+  let owner: ESTree.Node | null = callback.parent;
+
+  while (owner !== null && unwrapArrayExpression(owner) === callback) owner = owner.parent;
+
+  if (owner?.type !== NODE_TYPES.callExpression) return null;
+  const method = arrayMethodTarget(owner.callee);
+  const firstArgument = owner.arguments[0];
+
+  if (
+    method === null ||
+    !REDUCE_METHODS.has(method.name) ||
+    owner.arguments.length > 2 ||
+    firstArgument === undefined ||
+    unwrapArrayExpression(firstArgument) !== callback
+  )
+    return null;
+  const firstParameter = callback.params[0];
+
+  const accumulator =
+    firstParameter?.type === NODE_TYPES.assignmentPattern ? firstParameter.left : firstParameter;
+
+  if (accumulator?.type !== NODE_TYPES.identifier) return null;
+
+  return { callback, accumulator, initialValue: owner.arguments[1] };
 };
 
 type ReferencesAccumulatorInput = {
