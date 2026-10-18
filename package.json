@@ -1,6 +1,6 @@
 {
   "name": "oxlint-anti-slop",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Opinionated Oxlint rules for safer, clearer TypeScript in AI-assisted codebases.",
   "keywords": [
     "ai-assisted-development",
