@@ -1,6 +1,7 @@
 # `no-unnecessary-type-widening`
 
-Do not throw away structure that TypeScript already knows. The rule reports generic annotations such as `unknown`, `object`, generic dictionaries, and anonymous object types when the initializer already provides a concrete value.
+Do not throw away structure that TypeScript already knows. The rule reports generic annotations such as `unknown`, `object`, generic dictionaries, and anonymous object
+types when the initializer already provides a concrete value.
 
 ## ❌ Bad
 

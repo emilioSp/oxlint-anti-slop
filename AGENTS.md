@@ -10,10 +10,13 @@ npm library for a oxlint anti-slop plugin.
 
 ## At session start (clock in)
 
-1. Read ROADMAP.md and CHANGELOG.md for current state
-2. Read DESIGN_DECISIONS.md for important decisions
+Read `ROADMAP.md`, `CHANGELOG.md`, and `ADR.md`.
 
 ## Before session end (clock out)
 
-1. Update ROADMAP.md
-2. Update DESIGN_DECISIONS.md
+1. Update `ADR.md` only when the session includes a significant architectural decision.
+2. Update `ROADMAP.md`, but only when you worked on an item already present in it
+
+## Documentation
+
+README.md, and all docs under /docs folder are intended for humans. Don't write them for agents. They are not.

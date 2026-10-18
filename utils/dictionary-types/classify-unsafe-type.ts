@@ -41,8 +41,7 @@ export const classifyUnsafeType = ({
   if (unwrapped.type === DICTIONARY_NODE_TYPES.unknownKeyword)
     return UNSAFE_DICTIONARY_VALUES.unknown;
 
-  if (unwrapped.type === DICTIONARY_NODE_TYPES.anyKeyword)
-    return UNSAFE_DICTIONARY_VALUES.any;
+  if (unwrapped.type === DICTIONARY_NODE_TYPES.anyKeyword) return UNSAFE_DICTIONARY_VALUES.any;
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.objectKeyword)
     return UNSAFE_DICTIONARY_VALUES.object;
@@ -65,18 +64,12 @@ export const classifyUnsafeType = ({
       }),
     );
 
-    if (unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.any))
-      return UNSAFE_DICTIONARY_VALUES.union;
+    if (unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.any)) return UNSAFE_DICTIONARY_VALUES.union;
 
-    if (
-      options.allowUnknown &&
-      unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.unknown)
-    )
+    if (options.allowUnknown && unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.unknown))
       return UNSAFE_DICTIONARY_VALUES.unknown;
 
-    return unsafeMembers.some((member) => member !== null)
-      ? UNSAFE_DICTIONARY_VALUES.union
-      : null;
+    return unsafeMembers.some((member) => member !== null) ? UNSAFE_DICTIONARY_VALUES.union : null;
   }
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.intersectionType) {
@@ -90,8 +83,7 @@ export const classifyUnsafeType = ({
       }),
     );
 
-    if (unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.any))
-      return UNSAFE_DICTIONARY_VALUES.any;
+    if (unsafeMembers.includes(UNSAFE_DICTIONARY_VALUES.any)) return UNSAFE_DICTIONARY_VALUES.any;
 
     if (
       options.allowUnknown &&
@@ -99,14 +91,12 @@ export const classifyUnsafeType = ({
       unsafeMembers.every((member) => member !== null)
     ) {
       return (
-        unsafeMembers.find(
-          (member) => member !== UNSAFE_DICTIONARY_VALUES.unknown,
-        ) ?? UNSAFE_DICTIONARY_VALUES.unknown
+        unsafeMembers.find((member) => member !== UNSAFE_DICTIONARY_VALUES.unknown) ??
+        UNSAFE_DICTIONARY_VALUES.unknown
       );
     }
 
-    return unsafeMembers.length > 0 &&
-      unsafeMembers.every((member) => member !== null)
+    return unsafeMembers.length > 0 && unsafeMembers.every((member) => member !== null)
       ? unsafeMembers[0]
       : null;
   }
@@ -116,10 +106,7 @@ export const classifyUnsafeType = ({
 
   if (name === null) return null;
 
-  if (
-    TRANSPARENT_WRAPPERS.has(name) &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (TRANSPARENT_WRAPPERS.has(name) && isBuiltIn({ name, use: unwrapped, environment })) {
     const wrapped = unwrapped.typeArguments?.params[0];
 
     return wrapped === undefined

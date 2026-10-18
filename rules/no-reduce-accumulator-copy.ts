@@ -67,15 +67,11 @@ const enclosingReducer = (node: ESTree.Node) => {
   while (parent !== null) {
     if (parent.type === NODE_TYPES.functionDeclaration) return null;
 
-    if (
-      parent.type === NODE_TYPES.arrowFunction ||
-      parent.type === NODE_TYPES.functionExpression
-    ) {
+    if (parent.type === NODE_TYPES.arrowFunction || parent.type === NODE_TYPES.functionExpression) {
       const callback = parent;
       let owner: ESTree.Node | null = callback.parent;
 
-      while (owner !== null && unwrapArrayExpression(owner) === callback)
-        owner = owner.parent;
+      while (owner !== null && unwrapArrayExpression(owner) === callback) owner = owner.parent;
 
       if (owner?.type !== NODE_TYPES.callExpression) return null;
       const method = arrayMethodTarget(owner.callee);
@@ -127,12 +123,7 @@ const referencesAccumulator = ({
   if (variable === accumulator) return true;
   visited.add(variable);
 
-  if (
-    variable.references.some(
-      (reference) => reference.isWrite() && !reference.init,
-    )
-  )
-    return false;
+  if (variable.references.some((reference) => reference.isWrite() && !reference.init)) return false;
 
   for (const definition of variable.defs) {
     if (
@@ -227,8 +218,7 @@ const copiesAccumulator = ({
   }
 
   const arrayAccumulator =
-    initialValue !== undefined &&
-    isKnownArrayExpression({ sourceCode, node: initialValue });
+    initialValue !== undefined && isKnownArrayExpression({ sourceCode, node: initialValue });
 
   return arrayAccumulator && isAccumulator(method.object);
 };

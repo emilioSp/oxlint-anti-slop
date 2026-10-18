@@ -10,4 +10,5 @@ Rejected approach: Implementing a plugin rule that duplicates an existing Oxlint
 
 Constraint: Check existing Oxlint rules before adding a plugin rule.
 
-Evidence: The owner confirmed this decision during initialization. The [repository configuration](.oxlintrc.json) already enables native Oxlint rules alongside plugin rules. The [suggested configuration](README.md#suggested-configuration) documents this combination.
+Evidence: The owner confirmed this decision during initialization. The [repository configuration](.oxlintrc.json) already enables native Oxlint rules alongside plugin
+rules. The [suggested configuration](README.md#suggested-configuration) documents this combination.

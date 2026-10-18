@@ -45,10 +45,7 @@ export const noMeaninglessUnknownAliasesRule = defineRule({
             return matches(resolved.typeAnnotation);
           }
 
-          return (
-            resolved.type === NODE_TYPES.unionType &&
-            resolved.types.some(matches)
-          );
+          return resolved.type === NODE_TYPES.unionType && resolved.types.some(matches);
         },
       });
 

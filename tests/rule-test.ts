@@ -5,6 +5,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { promisify } from 'node:util';
+
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const execFileAsync = promisify(execFile);
@@ -46,8 +47,7 @@ type ProcessFailure = Error & {
   readonly stdout?: string;
 };
 
-const isProcessFailure = (error: unknown): error is ProcessFailure =>
-  error instanceof Error;
+const isProcessFailure = (error: unknown): error is ProcessFailure => error instanceof Error;
 
 const outputFrom = (stdout: string): OxlintOutput => {
   // JUSTIFICATION: Oxlint controls this JSON structure and the test reads only these fields.
@@ -59,9 +59,8 @@ type RunResult = {
   readonly diagnostics: readonly OxlintDiagnostic[];
 };
 
-const isNumericExitCode = (
-  value: number | string | undefined,
-): value is number => Number.isInteger(value);
+const isNumericExitCode = (value: number | string | undefined): value is number =>
+  Number.isInteger(value);
 
 const runOxlint = async ({
   configPath,
@@ -128,21 +127,17 @@ export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
 
     for (const fixture of fixtures) {
       it(`${fixture.name}: ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
-        if (configPath === null)
-          throw new Error('Oxlint configuration was not created');
+        if (configPath === null) throw new Error('Oxlint configuration was not created');
 
-        const fixturePath = resolve(
-          PROJECT_ROOT,
-          'tests/fixtures',
-          ruleName,
-          `${fixture.name}.ts`,
-        );
+        const fixturePath = resolve(PROJECT_ROOT, 'tests/fixtures', ruleName, `${fixture.name}.ts`);
 
         const result = await runOxlint({ configPath, fixturePath });
 
         if (fixture.expectedCode === null) {
+          // oxlint-disable-next-line vitest/no-conditional-expect
           expect(result.exitCode).toBe(0);
 
+          // oxlint-disable-next-line vitest/no-conditional-expect
           expect(result.diagnostics).toEqual([]);
 
           return;

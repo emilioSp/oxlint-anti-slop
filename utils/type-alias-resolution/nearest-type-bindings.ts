@@ -2,20 +2,14 @@
 
 import type { ESTree } from '@oxlint/plugins';
 
-import type {
-  TypeAliasEnvironment,
-  TypeBinding,
-} from '#utils/type-alias-resolution/types.js';
+import type { TypeAliasEnvironment, TypeBinding } from '#utils/type-alias-resolution/types.js';
 
 type AncestorDistanceInput = {
   readonly ancestor: ESTree.Node;
   readonly node: ESTree.Node;
 };
 
-const ancestorDistance = ({
-  ancestor,
-  node: inputNode,
-}: AncestorDistanceInput): number | null => {
+const ancestorDistance = ({ ancestor, node: inputNode }: AncestorDistanceInput): number | null => {
   let current: ESTree.Node | null = inputNode;
   let distance = 0;
 

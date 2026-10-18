@@ -13,10 +13,7 @@ const NODE_TYPES = {
 
 const isNode = (value: unknown): value is ESTree.Node => {
   return (
-    typeof value === 'object' &&
-    value !== null &&
-    'type' in value &&
-    typeof value.type === 'string'
+    typeof value === 'object' && value !== null && 'type' in value && typeof value.type === 'string'
   );
 };
 
@@ -31,8 +28,7 @@ const collectInferTypeParameterNames = ({
   visitorKeys,
   names,
 }: CollectInferTypeParameterNamesInput): void => {
-  if (node.type === NODE_TYPES.inferType)
-    names.add(node.typeParameter.name.name);
+  if (node.type === NODE_TYPES.inferType) names.add(node.typeParameter.name.name);
   const unknownNode: unknown = node;
 
   // JUSTIFICATION: Oxlint's visitor keys identify only ESTree child-node properties.
@@ -49,8 +45,7 @@ const collectInferTypeParameterNames = ({
     if (!Array.isArray(value)) continue;
 
     for (const child of value) {
-      if (isNode(child))
-        collectInferTypeParameterNames({ node: child, visitorKeys, names });
+      if (isNode(child)) collectInferTypeParameterNames({ node: child, visitorKeys, names });
     }
   }
 };
@@ -83,10 +78,7 @@ export const lexicalTypeParameterNames = ({
       names.add(current.key.name);
     }
 
-    if (
-      current.type === NODE_TYPES.conditionalType &&
-      descendant === current.trueType
-    ) {
+    if (current.type === NODE_TYPES.conditionalType && descendant === current.trueType) {
       collectInferTypeParameterNames({
         node: current.extendsType,
         visitorKeys,

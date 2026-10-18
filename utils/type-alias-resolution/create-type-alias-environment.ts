@@ -8,10 +8,7 @@ import type {
   VisitorKeys,
 } from '#utils/type-alias-resolution/types.js';
 
-const environmentsByProgram = new WeakMap<
-  ESTree.Program,
-  TypeAliasEnvironment
->();
+const environmentsByProgram = new WeakMap<ESTree.Program, TypeAliasEnvironment>();
 
 const NODE_TYPES = {
   program: 'Program',
@@ -31,10 +28,7 @@ const NODE_TYPES = {
 
 const isNode = (value: unknown): value is ESTree.Node => {
   return (
-    typeof value === 'object' &&
-    value !== null &&
-    'type' in value &&
-    typeof value.type === 'string'
+    typeof value === 'object' && value !== null && 'type' in value && typeof value.type === 'string'
   );
 };
 

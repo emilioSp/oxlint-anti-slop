@@ -7,9 +7,7 @@ Do not create an alias that only hides `unknown`. The alias adds a name but no i
 ```ts
 type IncomingWebhookBody = unknown;
 
-export async function handleWebhook(
-  body: IncomingWebhookBody,
-): Promise<void> {
+export async function handleWebhook(body: IncomingWebhookBody): Promise<void> {
   await processWebhook(body);
 }
 ```
@@ -23,9 +21,7 @@ type PaymentWebhook = {
   amount: number;
 };
 
-export async function handleWebhook(
-  body: unknown,
-): Promise<void> {
+export async function handleWebhook(body: unknown): Promise<void> {
   if (!isPaymentWebhook(body)) {
     throw new Error('Webhook payload is invalid.');
   }

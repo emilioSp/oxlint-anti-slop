@@ -12,10 +12,7 @@ const TYPE_KINDS = {
 export const containsUnknownType = (type: ESTree.TSType): boolean => {
   if (type.type === TYPE_KINDS.unknownKeyword) return true;
 
-  if (type.type === TYPE_KINDS.parenthesizedType)
-    return containsUnknownType(type.typeAnnotation);
+  if (type.type === TYPE_KINDS.parenthesizedType) return containsUnknownType(type.typeAnnotation);
 
-  return (
-    type.type === TYPE_KINDS.unionType && type.types.some(containsUnknownType)
-  );
+  return type.type === TYPE_KINDS.unionType && type.types.some(containsUnknownType);
 };

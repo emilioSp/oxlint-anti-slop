@@ -32,12 +32,7 @@ const DECLARATION_KINDS: [
   typeof PADDING_VALUES.class,
   typeof PADDING_VALUES.interface,
   typeof PADDING_VALUES.type,
-] = [
-  PADDING_VALUES.function,
-  PADDING_VALUES.class,
-  PADDING_VALUES.interface,
-  PADDING_VALUES.type,
-];
+] = [PADDING_VALUES.function, PADDING_VALUES.class, PADDING_VALUES.interface, PADDING_VALUES.type];
 
 const MULTILINE_DECLARATIONS: [
   typeof PADDING_VALUES.multilineConst,
@@ -139,8 +134,7 @@ export const requireLogicalBlankLinesRule: CreateRule = {
   meta: {
     ...paddingRule.meta,
     docs: {
-      description:
-        'Require readable spacing between declarations and logical statement groups.',
+      description: 'Require readable spacing between declarations and logical statement groups.',
     },
     schema: [],
   },

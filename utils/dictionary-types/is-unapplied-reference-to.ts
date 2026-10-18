@@ -12,10 +12,7 @@ type IsUnappliedReferenceToInput = {
 };
 
 /** Return whether a type is an unapplied reference to the given name. */
-export const isUnappliedReferenceTo = ({
-  type,
-  name,
-}: IsUnappliedReferenceToInput): boolean => {
+export const isUnappliedReferenceTo = ({ type, name }: IsUnappliedReferenceToInput): boolean => {
   const unwrapped = unwrapTransparentType(type);
 
   return (

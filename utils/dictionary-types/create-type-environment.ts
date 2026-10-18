@@ -1,6 +1,7 @@
 // Objective: Build the dictionary type environment for a program. Used by dictionary rules.
 
 import type { ESTree } from '@oxlint/plugins';
+
 import type { TypeEnvironment } from '#utils/dictionary-types/types.js';
 import { createTypeAliasEnvironment } from '#utils/type-alias-resolution/create-type-alias-environment.js';
 

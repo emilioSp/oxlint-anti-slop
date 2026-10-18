@@ -1,6 +1,7 @@
 // Objective: Register the anti-slop Oxlint plugin. Used when Oxlint loads this package.
 
 import { eslintCompatPlugin } from '@oxlint/plugins';
+
 import { noChainedTypeAssertionsRule } from '#rules/no-chained-type-assertions.js';
 import { noMeaninglessUnknownAliasesRule } from '#rules/no-meaningless-unknown-aliases.js';
 import { noNarrowingAfterWideningRule } from '#rules/no-narrowing-after-widening.js';
@@ -26,8 +27,7 @@ const antiSlopPlugin = eslintCompatPlugin({
     [RULE_NAMES.noMeaninglessUnknownAliases]: noMeaninglessUnknownAliasesRule,
     [RULE_NAMES.noNarrowingAfterWidening]: noNarrowingAfterWideningRule,
     [RULE_NAMES.requireLogicalBlankLines]: requireLogicalBlankLinesRule,
-    [RULE_NAMES.requireTypeAssertionJustification]:
-      requireTypeAssertionJustificationRule,
+    [RULE_NAMES.requireTypeAssertionJustification]: requireTypeAssertionJustificationRule,
   },
 });
 
