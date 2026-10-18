@@ -3,6 +3,7 @@
 import type { CreateRule } from '@oxlint/plugins';
 
 import createPaddingLineRule from '#eslint-stylistic/padding-line-between-statements.js';
+import type { StatementOption } from '#eslint-stylistic/padding-line-options.js';
 
 const PADDING_VALUES = {
   always: 'always',
@@ -27,34 +28,21 @@ const PADDING_VALUES = {
   blockLike: 'block-like',
 } as const;
 
-const DECLARATION_KINDS: [
-  typeof PADDING_VALUES.function,
-  typeof PADDING_VALUES.class,
-  typeof PADDING_VALUES.interface,
-  typeof PADDING_VALUES.type,
-] = [PADDING_VALUES.function, PADDING_VALUES.class, PADDING_VALUES.interface, PADDING_VALUES.type];
+const DECLARATION_KINDS = [
+  PADDING_VALUES.function,
+  PADDING_VALUES.class,
+  PADDING_VALUES.interface,
+  PADDING_VALUES.type,
+] satisfies StatementOption;
 
-const MULTILINE_DECLARATIONS: [
-  typeof PADDING_VALUES.multilineConst,
-  typeof PADDING_VALUES.multilineLet,
-  typeof PADDING_VALUES.multilineVar,
-  typeof PADDING_VALUES.multilineUsing,
-] = [
+const MULTILINE_DECLARATIONS = [
   PADDING_VALUES.multilineConst,
   PADDING_VALUES.multilineLet,
   PADDING_VALUES.multilineVar,
   PADDING_VALUES.multilineUsing,
-];
+] satisfies StatementOption;
 
-const CONTROL_STATEMENTS: [
-  typeof PADDING_VALUES.return,
-  typeof PADDING_VALUES.if,
-  typeof PADDING_VALUES.switch,
-  typeof PADDING_VALUES.try,
-  typeof PADDING_VALUES.for,
-  typeof PADDING_VALUES.while,
-  typeof PADDING_VALUES.do,
-] = [
+const CONTROL_STATEMENTS = [
   PADDING_VALUES.return,
   PADDING_VALUES.if,
   PADDING_VALUES.switch,
@@ -62,7 +50,7 @@ const CONTROL_STATEMENTS: [
   PADDING_VALUES.for,
   PADDING_VALUES.while,
   PADDING_VALUES.do,
-];
+] satisfies StatementOption;
 
 const paddingRule = createPaddingLineRule([
   {
