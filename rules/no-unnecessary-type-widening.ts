@@ -315,42 +315,38 @@ const hasKnownCallArgumentEvidence = ({
   environment,
   visitedVariables = new Set<Variable>(),
 }: HasKnownCallArgumentEvidenceInput): boolean => {
-  if (
-    expression.type === NODE_TYPES.parenthesizedExpression ||
-    expression.type === NODE_TYPES.nonNullExpression ||
-    expression.type === NODE_TYPES.satisfiesExpression
-  ) {
-    return hasKnownCallArgumentEvidence({
-      sourceCode,
-      expression: expression.expression,
-      environment,
-      visitedVariables,
-    });
+  switch (expression.type) {
+    case NODE_TYPES.parenthesizedExpression:
+    case NODE_TYPES.nonNullExpression:
+    case NODE_TYPES.satisfiesExpression:
+      return hasKnownCallArgumentEvidence({
+        sourceCode,
+        expression: expression.expression,
+        environment,
+        visitedVariables,
+      });
+    case NODE_TYPES.asExpression:
+    case NODE_TYPES.typeAssertion:
+      return hasInformativeType({
+        type: expression.typeAnnotation,
+        environment,
+      });
+    case NODE_TYPES.callExpression:
+      return hasKnownCallExpression({
+        sourceCode,
+        callee: expression.callee,
+        environment,
+      });
+    case NODE_TYPES.identifier:
+      return hasKnownCallArgumentEvidenceForIdentifier({
+        sourceCode,
+        expression,
+        environment,
+        visitedVariables,
+      });
+    default:
+      return isKnownEvidenceExpression(expression);
   }
-
-  if (expression.type === NODE_TYPES.asExpression || expression.type === NODE_TYPES.typeAssertion) {
-    return hasInformativeType({
-      type: expression.typeAnnotation,
-      environment,
-    });
-  }
-
-  if (expression.type === NODE_TYPES.callExpression) {
-    return hasKnownCallExpression({
-      sourceCode,
-      callee: expression.callee,
-      environment,
-    });
-  }
-
-  if (expression.type !== NODE_TYPES.identifier) return isKnownEvidenceExpression(expression);
-
-  return hasKnownCallArgumentEvidenceForIdentifier({
-    sourceCode,
-    expression,
-    environment,
-    visitedVariables,
-  });
 };
 
 type TypePredicateSubjectIndexInput = {
