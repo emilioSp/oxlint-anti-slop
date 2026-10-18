@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.7
+## 0.3.8
 
 Replaced Biome with Oxc tools: Oxlint for linting and Oxfmt for formatting. `npm run check` formats, lints, builds, and runs the tests.
 
