@@ -17,6 +17,10 @@ const isNode = (value: unknown): value is ESTree.Node => {
   );
 };
 
+const hasTypeParameters = (
+  node: ESTree.Node,
+): node is Extract<ESTree.Node, { typeParameters: unknown }> => 'typeParameters' in node;
+
 type CollectInferTypeParameterNamesInput = {
   readonly node: ESTree.Node;
   readonly visitorKeys: VisitorKeys;
@@ -65,7 +69,7 @@ export const lexicalTypeParameterNames = ({
   let current: ESTree.Node | null = node;
 
   while (current !== null && current.type !== NODE_TYPES.program) {
-    if ('typeParameters' in current) {
+    if (hasTypeParameters(current)) {
       for (const parameter of current.typeParameters?.params ?? []) {
         names.add(parameter.name.name);
       }
