@@ -34,12 +34,10 @@ export const dictionaryValueTypes = ({
   const unwrapped = unwrapTransparentType(type);
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.typeLiteral) {
-    return unwrapped.members.flatMap(
-      (member): readonly DictionaryResolvedType[] =>
-        member.type === DICTIONARY_NODE_TYPES.indexSignature &&
-        member.typeAnnotation !== null
-          ? [{ type: member.typeAnnotation.typeAnnotation, substitutions }]
-          : [],
+    return unwrapped.members.flatMap((member): readonly DictionaryResolvedType[] =>
+      member.type === DICTIONARY_NODE_TYPES.indexSignature && member.typeAnnotation !== null
+        ? [{ type: member.typeAnnotation.typeAnnotation, substitutions }]
+        : [],
     );
   }
 
@@ -67,10 +65,7 @@ export const dictionaryValueTypes = ({
         });
   }
 
-  if (
-    TRANSPARENT_WRAPPERS.has(name) &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (TRANSPARENT_WRAPPERS.has(name) && isBuiltIn({ name, use: unwrapped, environment })) {
     const wrapped = unwrapped.typeArguments?.params[0];
 
     return wrapped === undefined
@@ -83,10 +78,7 @@ export const dictionaryValueTypes = ({
         });
   }
 
-  if (
-    name === BUILT_IN_TYPE_NAMES.record &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (name === BUILT_IN_TYPE_NAMES.record && isBuiltIn({ name, use: unwrapped, environment })) {
     const value = unwrapped.typeArguments?.params[1] ?? null;
 
     return value === null ? [] : [{ type: value, substitutions }];

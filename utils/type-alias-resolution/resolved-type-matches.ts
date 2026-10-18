@@ -1,6 +1,7 @@
 // Objective: Match types after resolving visible aliases and parameters. Used by type-aware rules.
 
 import type { ESTree } from '@oxlint/plugins';
+
 import { typeReferenceName } from '#utils/dictionary-types/type-reference-name.js';
 import type {
   ResolvedTypeMatcher,
@@ -67,21 +68,14 @@ export const resolvedTypeMatches = ({
   environment,
   matcher,
 }: ResolvedTypeMatchesInput): boolean => {
-  const evaluate = ({
-    current,
-    substitutions,
-    resolvingAliases,
-  }: EvaluateInput): boolean => {
+  const evaluate = ({ current, substitutions, resolvingAliases }: EvaluateInput): boolean => {
     if (current.type === NODE_TYPES.typeReference) {
       const name = typeReferenceName(current);
 
       if (name !== null) {
         const substitution = substitutions.get(name);
 
-        if (
-          substitution !== undefined &&
-          !current.typeArguments?.params.length
-        ) {
+        if (substitution !== undefined && !current.typeArguments?.params.length) {
           return evaluate({
             current: substitution.type,
             substitutions: substitution.substitutions,

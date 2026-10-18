@@ -24,6 +24,7 @@ const payload = {
 } satisfies QueueJobPayload;
 ```
 
-Preserve the inferred type and check the intended contract with `satisfies`. For external input, keep the value as `unknown`, validate it with a named guard, and use the validated value without an assertion.
+Preserve the inferred type and check the intended contract with `satisfies`. For external input, keep the value as `unknown`, validate it with a named guard, and use the
+validated value without an assertion.
 
 [Back to available rules](../../README.md#available-rules)

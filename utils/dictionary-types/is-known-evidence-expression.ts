@@ -5,9 +5,7 @@ import type { ESTree } from '@oxlint/plugins';
 import { DICTIONARY_NODE_TYPES } from '#utils/dictionary-types/types.js';
 
 /** Return whether an expression has a directly known runtime shape. */
-export const isKnownEvidenceExpression = (
-  expression: ESTree.Expression,
-): boolean => {
+export const isKnownEvidenceExpression = (expression: ESTree.Expression): boolean => {
   let current = expression;
 
   while (

@@ -37,33 +37,25 @@ const ARRAY_METHOD_NAMES = {
   toSpliced: 'toSpliced',
 } as const;
 
-const ARRAY_METHODS: ReadonlySet<string> = new Set(
-  Object.values(ARRAY_METHOD_NAMES),
-);
+const ARRAY_METHODS: ReadonlySet<string> = new Set(Object.values(ARRAY_METHOD_NAMES));
 
 const DECLARATION_KINDS = {
   constant: 'const',
 } as const;
 
 const isArrayAnnotation = (type: ESTree.TSType): boolean => {
-  if (type.type === NODE_TYPES.arrayType || type.type === NODE_TYPES.tupleType)
-    return true;
+  if (type.type === NODE_TYPES.arrayType || type.type === NODE_TYPES.tupleType) return true;
 
-  if (type.type === NODE_TYPES.parenthesizedType)
-    return isArrayAnnotation(type.typeAnnotation);
+  if (type.type === NODE_TYPES.parenthesizedType) return isArrayAnnotation(type.typeAnnotation);
 
-  if (
-    type.type === NODE_TYPES.typeOperator &&
-    type.operator === TYPE_NAMES.readonlyOperator
-  ) {
+  if (type.type === NODE_TYPES.typeOperator && type.operator === TYPE_NAMES.readonlyOperator) {
     return isArrayAnnotation(type.typeAnnotation);
   }
 
   return (
     type.type === NODE_TYPES.typeReference &&
     type.typeName.type === NODE_TYPES.identifier &&
-    (type.typeName.name === TYPE_NAMES.array ||
-      type.typeName.name === TYPE_NAMES.readonlyArray)
+    (type.typeName.name === TYPE_NAMES.array || type.typeName.name === TYPE_NAMES.readonlyArray)
   );
 };
 
@@ -103,12 +95,7 @@ export const isKnownArrayExpression = ({
   if (variable === null || visited.has(variable)) return false;
   visited.add(variable);
 
-  if (
-    variable.references.some(
-      (reference) => reference.isWrite() && !reference.init,
-    )
-  )
-    return false;
+  if (variable.references.some((reference) => reference.isWrite() && !reference.init)) return false;
 
   for (const identifier of variable.identifiers) {
     const annotation = identifier.typeAnnotation?.typeAnnotation;

@@ -15,9 +15,7 @@ export const BUILT_IN_TYPE_NAMES = {
   nonNullable: 'NonNullable',
 } as const;
 
-export const BUILT_INS: ReadonlySet<string> = new Set(
-  Object.values(BUILT_IN_TYPE_NAMES),
-);
+export const BUILT_INS: ReadonlySet<string> = new Set(Object.values(BUILT_IN_TYPE_NAMES));
 
 export const TRANSPARENT_WRAPPER_NAMES = {
   readonly: BUILT_IN_TYPE_NAMES.readonly,
@@ -95,17 +93,13 @@ export type UnsafeDictionaryOptions = {
 export type UnsafeDictionaryValue =
   (typeof UNSAFE_DICTIONARY_VALUES)[keyof typeof UNSAFE_DICTIONARY_VALUES];
 
-export type WideningTargetKind =
-  (typeof WIDENING_TARGET_KINDS)[keyof typeof WIDENING_TARGET_KINDS];
+export type WideningTargetKind = (typeof WIDENING_TARGET_KINDS)[keyof typeof WIDENING_TARGET_KINDS];
 
 export type WideningTarget = {
   readonly kind: WideningTargetKind;
 };
 
 export type TypeEnvironment = {
-  readonly interfaces: ReadonlyMap<
-    string,
-    readonly ESTree.TSInterfaceDeclaration[]
-  >;
+  readonly interfaces: ReadonlyMap<string, readonly ESTree.TSInterfaceDeclaration[]>;
   readonly typeAliases: LexicalTypeAliasEnvironment;
 };

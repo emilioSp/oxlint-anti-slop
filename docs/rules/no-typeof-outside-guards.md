@@ -1,6 +1,7 @@
 # `no-typeof-outside-guards`
 
-Do not use `typeof` as an inline substitute for decoding an external value. Put runtime checks in a named type guard so the validation has a reusable name and a declared result.
+Do not use `typeof` as an inline substitute for decoding an external value. Put runtime checks in a named type guard so the validation has a reusable name and a declared
+result.
 
 ## ❌ Bad
 
@@ -13,8 +14,7 @@ export function resolvePageSize(value: unknown): number {
 ## ✅ Good
 
 ```ts
-const isPositivePageSize = (value: unknown): value is number =>
-  typeof value === 'number' && value > 0;
+const isPositivePageSize = (value: unknown): value is number => typeof value === 'number' && value > 0;
 
 export function resolvePageSize(value: unknown): number {
   return isPositivePageSize(value) ? value : 25;

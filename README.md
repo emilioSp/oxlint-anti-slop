@@ -1,6 +1,7 @@
 # oxlint-anti-slop
 
-Opinionated [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) rules for AI-assisted TypeScript development. Enforce explicit coding standards with actionable diagnostics that explain what to change and why.
+Opinionated [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) rules for AI-assisted TypeScript development. Enforce explicit coding standards with actionable
+diagnostics that explain what to change and why.
 
 ## A quick example
 
@@ -193,35 +194,37 @@ All native categories are set to `off`, so only the listed rules are enabled. Ad
 
 ## 🧰 Available rules
 
-These rules are intentionally opinionated. Some target type and performance pitfalls; others enforce team conventions rather than detect bugs. Enable the rules that fit your project and set the others to `off`.
+These rules are intentionally opinionated. Some target type and performance pitfalls; others enforce team conventions rather than detect bugs. Enable the rules that fit
+your project and set the others to `off`.
 
 ### Types and contracts
 
-| Rule | Enforces |
-| --- | --- |
-| [`no-chained-type-assertions`](docs/rules/no-chained-type-assertions.md) | Type assertions must not be chained to hide an unsafe conversion. |
-| [`no-unnecessary-type-widening`](docs/rules/no-unnecessary-type-widening.md) | Values with known structure must not be assigned to generic types. |
-| [`no-object-parameters`](docs/rules/no-object-parameters.md) | Function parameters must not use the generic `object` type. |
-| [`no-meaningless-unknown-aliases`](docs/rules/no-meaningless-unknown-aliases.md) | A type alias must not hide `unknown`. |
-| [`no-unsafe-dictionary-values`](docs/rules/no-unsafe-dictionary-values.md) | Dictionary values must not use `any`, `object`, or `{}` as escape hatches. |
-| [`no-narrowing-after-widening`](docs/rules/no-narrowing-after-widening.md) | A known local value must not be widened and later asserted to a narrower type. |
+| Rule                                                                             | Enforces                                                                       |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [`no-chained-type-assertions`](docs/rules/no-chained-type-assertions.md)         | Type assertions must not be chained to hide an unsafe conversion.              |
+| [`no-unnecessary-type-widening`](docs/rules/no-unnecessary-type-widening.md)     | Values with known structure must not be assigned to generic types.             |
+| [`no-object-parameters`](docs/rules/no-object-parameters.md)                     | Function parameters must not use the generic `object` type.                    |
+| [`no-meaningless-unknown-aliases`](docs/rules/no-meaningless-unknown-aliases.md) | A type alias must not hide `unknown`.                                          |
+| [`no-unsafe-dictionary-values`](docs/rules/no-unsafe-dictionary-values.md)       | Dictionary values must not use `any`, `object`, or `{}` as escape hatches.     |
+| [`no-narrowing-after-widening`](docs/rules/no-narrowing-after-widening.md)       | A known local value must not be widened and later asserted to a narrower type. |
 
 ### Performance
 
-| Rule | Enforces |
-| --- | --- |
+| Rule                                                                     | Enforces                                                         |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
 | [`no-reduce-accumulator-copy`](docs/rules/no-reduce-accumulator-copy.md) | Reducers must not copy a growing accumulator on every iteration. |
 
 ### Conventions and readability
 
-| Rule | Enforces |
-| --- | --- |
-| [`no-typeof-outside-guards`](docs/rules/no-typeof-outside-guards.md) | Runtime `typeof` checks must live in named type guards, except for existence probes. |
-| [`require-type-assertion-justification`](docs/rules/require-type-assertion-justification.md) | Non-const type assertions must explain the invariant they rely on. |
-| [`require-logical-blank-lines`](docs/rules/require-logical-blank-lines.md) | Logical declarations and statement groups must have readable spacing. |
+| Rule                                                                                         | Enforces                                                                             |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [`no-typeof-outside-guards`](docs/rules/no-typeof-outside-guards.md)                         | Runtime `typeof` checks must live in named type guards, except for existence probes. |
+| [`require-type-assertion-justification`](docs/rules/require-type-assertion-justification.md) | Non-const type assertions must explain the invariant they rely on.                   |
+| [`require-logical-blank-lines`](docs/rules/require-logical-blank-lines.md)                   | Logical declarations and statement groups must have readable spacing.                |
 
 ## Limitations
 
-Rules are deterministic checks based on syntax and local analysis, not a full TypeScript type check. They can miss problematic code or flag intentional patterns. Keep type checking, tests, and code review in your workflow: passing this lint does not guarantee correctness.
+Rules are deterministic checks based on syntax and local analysis, not a full TypeScript type check. They can miss problematic code or flag intentional patterns. Keep
+type checking, tests, and code review in your workflow: passing this lint does not guarantee correctness.
 
 `require-type-assertion-justification` checks for an explanation, not whether that explanation is true. A comment cannot make an unsafe assertion safe.

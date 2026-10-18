@@ -68,9 +68,7 @@ const configuredJustificationMarkers = (option: unknown): readonly string[] => {
     return DEFAULT_JUSTIFICATION_MARKERS;
   }
 
-  const markers = option.markers
-    .filter(isNonEmptyMarker)
-    .map((marker) => marker.trim());
+  const markers = option.markers.filter(isNonEmptyMarker).map((marker) => marker.trim());
 
   return markers.length > 0 ? markers : DEFAULT_JUSTIFICATION_MARKERS;
 };
@@ -80,10 +78,7 @@ const markerPattern = (markers: readonly string[]): RegExp => {
     .map((marker) => marker.replaceAll(/[.*+?^${}()|[\]\\]/gu, String.raw`\$&`))
     .join('|');
 
-  return new RegExp(
-    String.raw`(?:^|[^\p{L}\p{N}_])(?:${alternation})\s*:\s*\S`,
-    'u',
-  );
+  return new RegExp(String.raw`(?:^|[^\p{L}\p{N}_])(?:${alternation})\s*:\s*\S`, 'u');
 };
 
 type HasJustificationBeforeInput = {
@@ -101,10 +96,7 @@ const hasJustificationBefore = ({
 }: HasJustificationBeforeInput): boolean => {
   return sourceCode
     .getCommentsBefore(owner)
-    .some(
-      (comment) =>
-        comment.end <= assertion.start && pattern.test(comment.value),
-    );
+    .some((comment) => comment.end <= assertion.start && pattern.test(comment.value));
 };
 
 type HasJustificationCommentInput = {

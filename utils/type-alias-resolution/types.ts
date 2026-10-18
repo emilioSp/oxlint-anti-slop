@@ -19,7 +19,4 @@ export type ResolvedTypeMatcherInput = {
   readonly matches: (child: ESTree.TSType) => boolean;
 };
 
-export type ResolvedTypeMatcher = ({
-  type,
-  matches,
-}: ResolvedTypeMatcherInput) => boolean;
+export type ResolvedTypeMatcher = ({ type, matches }: ResolvedTypeMatcherInput) => boolean;

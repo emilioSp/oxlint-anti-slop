@@ -19,17 +19,11 @@ export const functionParameterTypeAnnotation = (
   }
 
   if (parameter.type === PARAMETER_TYPES.restElement) {
-    return (
-      parameter.typeAnnotation ??
-      functionParameterTypeAnnotation(parameter.argument)
-    );
+    return parameter.typeAnnotation ?? functionParameterTypeAnnotation(parameter.argument);
   }
 
   if (parameter.type === PARAMETER_TYPES.assignmentPattern) {
-    return (
-      parameter.typeAnnotation ??
-      functionParameterTypeAnnotation(parameter.left)
-    );
+    return parameter.typeAnnotation ?? functionParameterTypeAnnotation(parameter.left);
   }
 
   return parameter.typeAnnotation;

@@ -1,6 +1,7 @@
 # `require-logical-blank-lines`
 
-Keep blank lines between imports and declarations, between top-level declarations, around multiline declarations, and between logical control-flow groups. Related imports and overload declarations can stay together.
+Keep blank lines between imports and declarations, between top-level declarations, around multiline declarations, and between logical control-flow groups. Related imports
+and overload declarations can stay together.
 
 ## ❌ Bad
 

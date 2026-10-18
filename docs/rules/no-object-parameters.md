@@ -5,9 +5,7 @@ Do not use `object` for a function parameter. It says that the value is non-prim
 ## ❌ Bad
 
 ```ts
-export async function queueInvoiceEmail(
-  invoice: object,
-): Promise<void> {
+export async function queueInvoiceEmail(invoice: object): Promise<void> {
   await emailQueue.add('invoice-ready', invoice);
 }
 ```
@@ -21,9 +19,7 @@ type InvoiceEmail = {
   locale: string;
 };
 
-export async function queueInvoiceEmail(
-  invoice: InvoiceEmail,
-): Promise<void> {
+export async function queueInvoiceEmail(invoice: InvoiceEmail): Promise<void> {
   await emailQueue.add('invoice-ready', invoice);
 }
 ```

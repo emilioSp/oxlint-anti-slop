@@ -2,14 +2,12 @@
 
 import type { ESTree } from '@oxlint/plugins';
 import { defineRule } from '@oxlint/plugins';
-import { classifyUnsafeDictionary } from '#utils/dictionary-types/classify-unsafe-dictionary.js';
+
 import { classifyUnsafeDictionaryValue } from '#utils/dictionary-types/classify-unsafe-dictionary-value.js';
+import { classifyUnsafeDictionary } from '#utils/dictionary-types/classify-unsafe-dictionary.js';
 import { createTypeEnvironment } from '#utils/dictionary-types/create-type-environment.js';
 import { typeReferenceName } from '#utils/dictionary-types/type-reference-name.js';
-import type {
-  TypeEnvironment,
-  UnsafeDictionaryValue,
-} from '#utils/dictionary-types/types.js';
+import type { TypeEnvironment, UnsafeDictionaryValue } from '#utils/dictionary-types/types.js';
 import { visibleTypeAlias } from '#utils/type-alias-resolution/visible-type-alias.js';
 
 const MESSAGE_IDS = {
@@ -54,15 +52,8 @@ type IsPlainAliasConsumerUseInput = {
   readonly environment: TypeEnvironment;
 };
 
-const isPlainAliasConsumerUse = ({
-  node,
-  environment,
-}: IsPlainAliasConsumerUseInput): boolean => {
-  if (
-    node.type !== NODE_TYPES.typeReference ||
-    node.typeArguments?.params.length
-  )
-    return false;
+const isPlainAliasConsumerUse = ({ node, environment }: IsPlainAliasConsumerUseInput): boolean => {
+  if (node.type !== NODE_TYPES.typeReference || node.typeArguments?.params.length) return false;
   const name = typeReferenceName(node);
 
   return (
@@ -83,8 +74,7 @@ const isInsideTypeParameterConstraint = (node: ESTree.TSType): boolean => {
   let parent: ESTree.Node | null = child.parent;
 
   while (parent !== null && parent.type !== NODE_TYPES.program) {
-    if (parent.type === NODE_TYPES.typeParameter && parent.constraint === child)
-      return true;
+    if (parent.type === NODE_TYPES.typeParameter && parent.constraint === child) return true;
     child = parent;
     parent = child.parent;
   }

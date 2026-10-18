@@ -25,10 +25,7 @@ export const aliasSubstitution = ({
     const argument = arguments_[index] ?? parameter.default;
 
     if (argument === null || argument === undefined) return null;
-    next.set(
-      parameter.name.name,
-      resolvedSubstitutionArgument({ type: argument, base: next }),
-    );
+    next.set(parameter.name.name, resolvedSubstitutionArgument({ type: argument, base: next }));
   }
 
   return next;

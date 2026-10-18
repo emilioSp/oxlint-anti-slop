@@ -2,6 +2,7 @@
 
 import type { Context, ESTree, SourceCode, Variable } from '@oxlint/plugins';
 import { defineRule } from '@oxlint/plugins';
+
 import { classifyUnsafeDictionaryValue } from '#utils/dictionary-types/classify-unsafe-dictionary-value.js';
 import { classifyWideningTarget } from '#utils/dictionary-types/classify-widening-target.js';
 import { createTypeEnvironment } from '#utils/dictionary-types/create-type-environment.js';
@@ -78,9 +79,7 @@ const unwrapExpression = (expression: ESTree.Expression): ESTree.Expression => {
   return current;
 };
 
-const variableDeclarator = (
-  variable: Variable,
-): ESTree.VariableDeclarator | null => {
+const variableDeclarator = (variable: Variable): ESTree.VariableDeclarator | null => {
   if (variable.defs.length !== 1) return null;
   const [definition] = variable.defs;
 
@@ -95,16 +94,11 @@ type IsStableConstVariableInput = {
   readonly declarator: ESTree.VariableDeclarator;
 };
 
-const isStableConstVariable = ({
-  variable,
-  declarator,
-}: IsStableConstVariableInput): boolean => {
+const isStableConstVariable = ({ variable, declarator }: IsStableConstVariableInput): boolean => {
   return (
     declarator.parent.type === NODE_TYPES.variableDeclaration &&
     declarator.parent.kind === DECLARATION_KINDS.constant &&
-    variable.references.every(
-      (reference) => reference.init || !reference.isWrite(),
-    )
+    variable.references.every((reference) => reference.init || !reference.isWrite())
   );
 };
 
@@ -145,9 +139,7 @@ const hasKnownEvidence = ({
   });
 };
 
-const isFunctionExpression = (
-  node: ESTree.Node,
-): node is FunctionExpression => {
+const isFunctionExpression = (node: ESTree.Node): node is FunctionExpression => {
   return (
     node.type === NODE_TYPES.arrowFunction ||
     node.type === NODE_TYPES.functionDeclaration ||
@@ -178,10 +170,7 @@ const localFunctionForCall = ({
 
   if (definition === undefined) return null;
 
-  if (
-    definition.type === NODE_TYPES.functionName &&
-    isFunctionExpression(definition.node)
-  ) {
+  if (definition.type === NODE_TYPES.functionName && isFunctionExpression(definition.node)) {
     return definition.node;
   }
 
@@ -197,9 +186,7 @@ const localFunctionForCall = ({
   if (initializer === null) return null;
   const unwrappedInitializer = unwrapExpression(initializer);
 
-  return isFunctionExpression(unwrappedInitializer)
-    ? unwrappedInitializer
-    : null;
+  return isFunctionExpression(unwrappedInitializer) ? unwrappedInitializer : null;
 };
 
 type VariableTypeAnnotationInput = {
@@ -224,22 +211,16 @@ const variableTypeAnnotation = ({
     return definition.node.id.typeAnnotation ?? null;
   }
 
-  if (
-    definition.type !== NODE_TYPES.parameter ||
-    !isFunctionExpression(definition.node)
-  ) {
+  if (definition.type !== NODE_TYPES.parameter || !isFunctionExpression(definition.node)) {
     return null;
   }
 
   const parameter = definition.node.params.find(
     (candidate) =>
-      functionParameterBindingName({ parameter: candidate, sourceCode }) ===
-      variable.name,
+      functionParameterBindingName({ parameter: candidate, sourceCode }) === variable.name,
   );
 
-  return parameter === undefined
-    ? null
-    : (functionParameterTypeAnnotation(parameter) ?? null);
+  return parameter === undefined ? null : (functionParameterTypeAnnotation(parameter) ?? null);
 };
 
 type HasInformativeTypeInput = {
@@ -247,10 +228,7 @@ type HasInformativeTypeInput = {
   readonly environment: TypeEnvironment;
 };
 
-const hasInformativeType = ({
-  type,
-  environment,
-}: HasInformativeTypeInput): boolean => {
+const hasInformativeType = ({ type, environment }: HasInformativeTypeInput): boolean => {
   return (
     classifyUnsafeDictionaryValue({
       valueType: type,
@@ -328,10 +306,7 @@ const hasKnownCallExpression = ({
   const owner = localFunctionForCall({ sourceCode, callee });
   const returnType = owner?.returnType?.typeAnnotation;
 
-  return (
-    returnType !== undefined &&
-    hasInformativeType({ type: returnType, environment })
-  );
+  return returnType !== undefined && hasInformativeType({ type: returnType, environment });
 };
 
 const hasKnownCallArgumentEvidence = ({
@@ -353,10 +328,7 @@ const hasKnownCallArgumentEvidence = ({
     });
   }
 
-  if (
-    expression.type === NODE_TYPES.asExpression ||
-    expression.type === NODE_TYPES.typeAssertion
-  ) {
+  if (expression.type === NODE_TYPES.asExpression || expression.type === NODE_TYPES.typeAssertion) {
     return hasInformativeType({
       type: expression.typeAnnotation,
       environment,
@@ -371,8 +343,7 @@ const hasKnownCallArgumentEvidence = ({
     });
   }
 
-  if (expression.type !== NODE_TYPES.identifier)
-    return isKnownEvidenceExpression(expression);
+  if (expression.type !== NODE_TYPES.identifier) return isKnownEvidenceExpression(expression);
 
   return hasKnownCallArgumentEvidenceForIdentifier({
     sourceCode,
@@ -404,8 +375,7 @@ const typePredicateSubjectIndex = ({
 
   const index = owner.params.findIndex(
     (parameter) =>
-      functionParameterBindingName({ parameter, sourceCode }) ===
-      predicateParameterName,
+      functionParameterBindingName({ parameter, sourceCode }) === predicateParameterName,
   );
 
   return index === -1 ? null : index;
@@ -452,10 +422,7 @@ type SourceKeyNameInput = {
 };
 
 const sourceKeyName = ({ sourceCode, key }: SourceKeyNameInput): string => {
-  if (
-    key.type === NODE_TYPES.identifier ||
-    key.type === NODE_TYPES.privateIdentifier
-  )
+  if (key.type === NODE_TYPES.identifier || key.type === NODE_TYPES.privateIdentifier)
     return key.name;
 
   if (key.type === NODE_TYPES.literal) return String(key.value);
@@ -474,10 +441,7 @@ const functionName = ({ sourceCode, owner }: FunctionNameInput): string => {
   if (owner.id !== null) return owner.id.name;
   const parent = owner.parent;
 
-  if (
-    parent.type === NODE_TYPES.variableDeclarator &&
-    parent.id.type === NODE_TYPES.identifier
-  )
+  if (parent.type === NODE_TYPES.variableDeclarator && parent.id.type === NODE_TYPES.identifier)
     return parent.id.name;
 
   if (parent.type === NODE_TYPES.methodDefinition)
@@ -489,15 +453,10 @@ const functionName = ({ sourceCode, owner }: FunctionNameInput): string => {
 const isEmptyObjectExpression = (expression: ESTree.Expression): boolean => {
   const unwrapped = unwrapExpression(expression);
 
-  return (
-    unwrapped.type === NODE_TYPES.objectExpression &&
-    unwrapped.properties.length === 0
-  );
+  return unwrapped.type === NODE_TYPES.objectExpression && unwrapped.properties.length === 0;
 };
 
-const isDictionaryAccumulatorTarget = (
-  destination: WideningTarget,
-): boolean => {
+const isDictionaryAccumulatorTarget = (destination: WideningTarget): boolean => {
   return (
     destination.kind === WIDENING_TARGET_KINDS.openDictionary ||
     destination.kind === WIDENING_TARGET_KINDS.genericContainer
@@ -506,8 +465,7 @@ const isDictionaryAccumulatorTarget = (
 
 const hasParentAssertion = (node: ESTree.Node): boolean => {
   return (
-    node.parent?.type === NODE_TYPES.asExpression ||
-    node.parent?.type === NODE_TYPES.typeAssertion
+    node.parent?.type === NODE_TYPES.asExpression || node.parent?.type === NODE_TYPES.typeAssertion
   );
 };
 
@@ -537,14 +495,9 @@ const createReportFlow = ({
   return ({ expression, destination, subject }: ReportFlowInput) => {
     if (destination === null) return;
 
-    if (
-      isDictionaryAccumulatorTarget(destination) &&
-      isEmptyObjectExpression(expression)
-    )
-      return;
+    if (isDictionaryAccumulatorTarget(destination) && isEmptyObjectExpression(expression)) return;
 
-    if (!hasKnownEvidence({ sourceCode: context.sourceCode, expression }))
-      return;
+    if (!hasKnownEvidence({ sourceCode: context.sourceCode, expression })) return;
 
     context.report({
       node: expression,
@@ -559,10 +512,7 @@ type ReportVariableFlowInput = {
   readonly services: WideningRuleServices;
 };
 
-const reportVariableFlow = ({
-  node,
-  services,
-}: ReportVariableFlowInput): void => {
+const reportVariableFlow = ({ node, services }: ReportVariableFlowInput): void => {
   if (node.init === null || node.id.type !== NODE_TYPES.identifier) return;
 
   const destination =
@@ -585,10 +535,7 @@ type ReportPropertyFlowInput = {
   readonly services: WideningRuleServices;
 };
 
-const reportPropertyFlow = ({
-  node,
-  services,
-}: ReportPropertyFlowInput): void => {
+const reportPropertyFlow = ({ node, services }: ReportPropertyFlowInput): void => {
   if (node.value === null) return;
 
   const destination =
@@ -614,14 +561,8 @@ type ReportAssignmentFlowInput = {
   readonly services: WideningRuleServices;
 };
 
-const reportAssignmentFlow = ({
-  node,
-  services,
-}: ReportAssignmentFlowInput): void => {
-  if (
-    node.operator !== TEXT_VALUES.assignmentOperator ||
-    node.left.type !== NODE_TYPES.identifier
-  )
+const reportAssignmentFlow = ({ node, services }: ReportAssignmentFlowInput): void => {
+  if (node.operator !== TEXT_VALUES.assignmentOperator || node.left.type !== NODE_TYPES.identifier)
     return;
 
   const variable = resolveVariable({
@@ -632,12 +573,10 @@ const reportAssignmentFlow = ({
   if (variable === null) return;
   const declarator = variableDeclarator(variable);
 
-  if (declarator === null || declarator.id.type !== NODE_TYPES.identifier)
-    return;
+  if (declarator === null || declarator.id.type !== NODE_TYPES.identifier) return;
 
   const destination =
-    services.state.environment === null ||
-    declarator.id.typeAnnotation === undefined
+    services.state.environment === null || declarator.id.typeAnnotation === undefined
       ? null
       : annotationTarget({
           annotation: declarator.id.typeAnnotation,
@@ -685,10 +624,7 @@ type ReportCallArgumentFlowInput = {
   readonly services: WideningRuleServices;
 };
 
-const reportCallArgumentFlow = ({
-  node,
-  services,
-}: ReportCallArgumentFlowInput): void => {
+const reportCallArgumentFlow = ({ node, services }: ReportCallArgumentFlowInput): void => {
   const environment = services.state.environment;
 
   if (environment === null) return;
@@ -765,10 +701,7 @@ type ReportArrowReturnFlowInput = {
   readonly services: WideningRuleServices;
 };
 
-const reportArrowReturnFlow = ({
-  node,
-  services,
-}: ReportArrowReturnFlowInput): void => {
+const reportArrowReturnFlow = ({ node, services }: ReportArrowReturnFlowInput): void => {
   if (node.body.type === NODE_TYPES.blockStatement) return;
 
   const destination =
@@ -794,10 +727,7 @@ type ReportAssertionFlowInput = {
   readonly services: WideningRuleServices;
 };
 
-const reportAssertionFlow = ({
-  node,
-  services,
-}: ReportAssertionFlowInput): void => {
+const reportAssertionFlow = ({ node, services }: ReportAssertionFlowInput): void => {
   const environment = services.state.environment;
 
   if (environment === null || hasParentAssertion(node)) return;
@@ -841,20 +771,15 @@ export const noUnnecessaryTypeWideningRule = defineRule({
         reportVariableFlow({ node, services }),
       PropertyDefinition: (node: ESTree.PropertyDefinition) =>
         reportPropertyFlow({ node, services }),
-      AccessorProperty: (node: ESTree.AccessorProperty) =>
-        reportPropertyFlow({ node, services }),
+      AccessorProperty: (node: ESTree.AccessorProperty) => reportPropertyFlow({ node, services }),
       AssignmentExpression: (node: ESTree.AssignmentExpression) =>
         reportAssignmentFlow({ node, services }),
-      CallExpression: (node: ESTree.CallExpression) =>
-        reportCallArgumentFlow({ node, services }),
-      ReturnStatement: (node: ESTree.ReturnStatement) =>
-        reportReturnFlow({ node, services }),
+      CallExpression: (node: ESTree.CallExpression) => reportCallArgumentFlow({ node, services }),
+      ReturnStatement: (node: ESTree.ReturnStatement) => reportReturnFlow({ node, services }),
       ArrowFunctionExpression: (node: ESTree.ArrowFunctionExpression) =>
         reportArrowReturnFlow({ node, services }),
-      TSAsExpression: (node: ESTree.TSAsExpression) =>
-        reportAssertionFlow({ node, services }),
-      TSTypeAssertion: (node: ESTree.TSTypeAssertion) =>
-        reportAssertionFlow({ node, services }),
+      TSAsExpression: (node: ESTree.TSAsExpression) => reportAssertionFlow({ node, services }),
+      TSTypeAssertion: (node: ESTree.TSTypeAssertion) => reportAssertionFlow({ node, services }),
     };
   },
 });

@@ -34,9 +34,7 @@ const EXISTENCE_OPERATOR_NAMES = {
   looseNotEqual: '!=',
 } as const;
 
-const EXISTENCE_OPERATORS: ReadonlySet<string> = new Set(
-  Object.values(EXISTENCE_OPERATOR_NAMES),
-);
+const EXISTENCE_OPERATORS: ReadonlySet<string> = new Set(Object.values(EXISTENCE_OPERATOR_NAMES));
 
 const isRuntimeFunction = (node: ESTree.Node): node is RuntimeFunction => {
   return (
@@ -51,9 +49,7 @@ const isInsideTypeGuard = (node: ESTree.Node): boolean => {
 
   while (current !== null && current.type !== NODE_TYPES.program) {
     if (isRuntimeFunction(current)) {
-      return (
-        current.returnType?.typeAnnotation.type === NODE_TYPES.typePredicate
-      );
+      return current.returnType?.typeAnnotation.type === NODE_TYPES.typePredicate;
     }
 
     current = current.parent;
@@ -71,9 +67,7 @@ const isExistenceProbe = (node: ESTree.UnaryExpression): boolean => {
   if (!EXISTENCE_OPERATORS.has(parent.operator)) return false;
   const other = parent.left === node ? parent.right : parent.left;
 
-  return (
-    other.type === NODE_TYPES.literal && other.value === GLOBAL_NAMES.undefined
-  );
+  return other.type === NODE_TYPES.literal && other.value === GLOBAL_NAMES.undefined;
 };
 
 /** Disallow runtime typeof checks that narrow unparsed values instead of decoding them. */

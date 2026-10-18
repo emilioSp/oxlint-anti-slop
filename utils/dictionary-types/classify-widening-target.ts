@@ -39,9 +39,7 @@ export const classifyWideningTarget = ({
   }
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.typeLiteral) {
-    return unwrapped.members.some(
-      (member) => member.type === DICTIONARY_NODE_TYPES.indexSignature,
-    )
+    return unwrapped.members.some((member) => member.type === DICTIONARY_NODE_TYPES.indexSignature)
       ? { kind: WIDENING_TARGET_KINDS.openDictionary }
       : unwrapped.members.length > 0
         ? { kind: WIDENING_TARGET_KINDS.anonymousObject }
@@ -57,21 +55,13 @@ export const classifyWideningTarget = ({
 
   if (name === null) return null;
 
-  if (
-    TRANSPARENT_WRAPPERS.has(name) &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (TRANSPARENT_WRAPPERS.has(name) && isBuiltIn({ name, use: unwrapped, environment })) {
     const wrapped = unwrapped.typeArguments?.params[0];
 
-    return wrapped === undefined
-      ? null
-      : classifyWideningTarget({ type: wrapped, environment });
+    return wrapped === undefined ? null : classifyWideningTarget({ type: wrapped, environment });
   }
 
-  if (
-    name === BUILT_IN_TYPE_NAMES.record &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (name === BUILT_IN_TYPE_NAMES.record && isBuiltIn({ name, use: unwrapped, environment })) {
     return hasBroadRecordKey({
       type: unwrapped,
       environment,
@@ -140,10 +130,7 @@ const hasBroadRecordKey = ({
 }: HasBroadRecordKeyInput): boolean => {
   const key = type.typeArguments?.params[0];
 
-  return (
-    key === undefined ||
-    isBroadMappedKey({ type: key, environment, substitutions })
-  );
+  return key === undefined || isBroadMappedKey({ type: key, environment, substitutions });
 };
 
 type IsBroadMappedKeyInput = {
@@ -186,10 +173,7 @@ const isBroadMappedKey = ({
   if (name === null) return false;
   const substitution = substitutions.get(name);
 
-  if (
-    substitution !== undefined &&
-    !isUnappliedReferenceTo({ type: substitution, name })
-  ) {
+  if (substitution !== undefined && !isUnappliedReferenceTo({ type: substitution, name })) {
     return isBroadMappedKey({
       type: substitution,
       environment,
@@ -198,10 +182,7 @@ const isBroadMappedKey = ({
     });
   }
 
-  if (
-    name === BUILT_IN_TYPE_NAMES.propertyKey &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  )
+  if (name === BUILT_IN_TYPE_NAMES.propertyKey && isBuiltIn({ name, use: unwrapped, environment }))
     return true;
 
   const alias = visibleTypeAlias({
@@ -253,9 +234,7 @@ const classifyAliasBroadTarget = ({
   }
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.typeLiteral) {
-    return unwrapped.members.some(
-      (member) => member.type === DICTIONARY_NODE_TYPES.indexSignature,
-    )
+    return unwrapped.members.some((member) => member.type === DICTIONARY_NODE_TYPES.indexSignature)
       ? { kind: WIDENING_TARGET_KINDS.openDictionary }
       : null;
   }
@@ -287,10 +266,7 @@ const classifyAliasBroadTarget = ({
         });
   }
 
-  if (
-    TRANSPARENT_WRAPPERS.has(name) &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (TRANSPARENT_WRAPPERS.has(name) && isBuiltIn({ name, use: unwrapped, environment })) {
     const wrapped = unwrapped.typeArguments?.params[0];
 
     return wrapped === undefined
@@ -303,10 +279,7 @@ const classifyAliasBroadTarget = ({
         });
   }
 
-  if (
-    name === BUILT_IN_TYPE_NAMES.record &&
-    isBuiltIn({ name, use: unwrapped, environment })
-  ) {
+  if (name === BUILT_IN_TYPE_NAMES.record && isBuiltIn({ name, use: unwrapped, environment })) {
     return hasBroadRecordKey({ type: unwrapped, environment, substitutions })
       ? { kind: WIDENING_TARGET_KINDS.openDictionary }
       : null;

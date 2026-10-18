@@ -10,12 +10,7 @@
       "specifier": "./index.ts"
     }
   ],
-  "ignorePatterns": [
-    "dist/**",
-    "tests/fixtures/**",
-    ".pi/**",
-    "vendor/**"
-  ],
+  "ignorePatterns": ["dist/**", "tests/fixtures/**", ".pi/**", "vendor/**"],
   "rules": {
     "vitest/valid-title": [
       "error",
