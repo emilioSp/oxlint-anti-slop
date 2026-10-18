@@ -143,11 +143,11 @@ const isBroadRecordType = (type: ESTree.TSType): boolean => {
   if (unwrapped.type !== NODE_TYPES.typeLiteral || unwrapped.members.length !== 1) return false;
   const [member] = unwrapped.members;
 
-  const [parameter] = member?.type === NODE_TYPES.indexSignature ? member.parameters : [];
+  if (member?.type !== NODE_TYPES.indexSignature || member.parameters.length !== 1) return false;
+
+  const [parameter] = member.parameters;
 
   return (
-    member?.type === NODE_TYPES.indexSignature &&
-    member.parameters.length === 1 &&
     parameter !== undefined &&
     isBroadRecordKeyType(parameter.typeAnnotation.typeAnnotation) &&
     isUnknownOrAnyType(member.typeAnnotation.typeAnnotation)

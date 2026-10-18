@@ -39,11 +39,11 @@ export const classifyWideningTarget = ({
   }
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.typeLiteral) {
-    return unwrapped.members.some((member) => member.type === DICTIONARY_NODE_TYPES.indexSignature)
-      ? { kind: WIDENING_TARGET_KINDS.openDictionary }
-      : unwrapped.members.length > 0
-        ? { kind: WIDENING_TARGET_KINDS.anonymousObject }
-        : null;
+    if (unwrapped.members.some((member) => member.type === DICTIONARY_NODE_TYPES.indexSignature)) {
+      return { kind: WIDENING_TARGET_KINDS.openDictionary };
+    }
+
+    return unwrapped.members.length > 0 ? { kind: WIDENING_TARGET_KINDS.anonymousObject } : null;
   }
 
   if (unwrapped.type === DICTIONARY_NODE_TYPES.mappedType) {
@@ -79,28 +79,6 @@ export const classifyWideningTarget = ({
 
   if (alias === null) return null;
 
-  if ((alias.typeParameters?.params.length ?? 0) > 0) {
-    const substitutions = aliasSubstitution({
-      alias,
-      type: unwrapped,
-      base: new Map(),
-    });
-
-    const resolved =
-      substitutions === null
-        ? null
-        : classifyAliasBroadTarget({
-            type: alias.typeAnnotation,
-            environment,
-            substitutions,
-            resolvingAliases: new Set([name]),
-          });
-
-    return resolved?.kind === WIDENING_TARGET_KINDS.openDictionary
-      ? { kind: WIDENING_TARGET_KINDS.genericContainer }
-      : null;
-  }
-
   const substitutions = aliasSubstitution({
     alias,
     type: unwrapped,
@@ -109,12 +87,20 @@ export const classifyWideningTarget = ({
 
   if (substitutions === null) return null;
 
-  return classifyAliasBroadTarget({
+  const resolved = classifyAliasBroadTarget({
     type: alias.typeAnnotation,
     environment,
     substitutions,
     resolvingAliases: new Set([name]),
   });
+
+  if ((alias.typeParameters?.params.length ?? 0) > 0) {
+    return resolved?.kind === WIDENING_TARGET_KINDS.openDictionary
+      ? { kind: WIDENING_TARGET_KINDS.genericContainer }
+      : null;
+  }
+
+  return resolved;
 };
 
 type HasBroadRecordKeyInput = {
