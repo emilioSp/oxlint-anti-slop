@@ -1,8 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.3.7
 
 Replaced Biome with Oxc tools: Oxlint for linting and Oxfmt for formatting. `npm run check` formats, lints, builds, and runs the tests.
+
+Simplified rule analysis and shared type utilities without changing rule behavior, diagnostics, or public APIs. Integration test helpers now use named input types and
+`given ... when ... then ...` titles.
 
 ## 0.3.6
 
