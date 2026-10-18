@@ -134,8 +134,10 @@ export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
         const result = await runOxlint({ configPath, fixturePath });
 
         if (fixture.expectedCode === null) {
+          // oxlint-disable-next-line vitest/no-conditional-expect
           expect(result.exitCode).toBe(0);
 
+          // oxlint-disable-next-line vitest/no-conditional-expect
           expect(result.diagnostics).toEqual([]);
 
           return;
