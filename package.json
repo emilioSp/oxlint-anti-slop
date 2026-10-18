@@ -58,9 +58,7 @@
     "prepublishOnly": "npm run check",
     "publish:npm": "npm publish --access public",
     "fmt": "oxfmt",
-    "lint": "oxlint --fix",
-    "lint:anti-slop": "npm run build && oxlint --fix",
-    "lint:fix": "biome check --write . && npm run lint:anti-slop"
+    "lint": "oxlint --fix"
   },
   "dependencies": {
     "@oxlint/plugins": "1.86.0"

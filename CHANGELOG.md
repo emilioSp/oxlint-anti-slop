@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+Replaced Biome with Oxc tools: Oxlint for linting and Oxfmt for formatting. `npm run check` formats, lints, builds, and runs the tests.
+
 ## 0.3.6
 
 1. Enabled native Oxlint rules for constant bindings, unnecessary `else` branches, type aliases instead of interfaces, and CommonJS restrictions in the repository

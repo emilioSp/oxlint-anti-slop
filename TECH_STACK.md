@@ -19,6 +19,8 @@ The [TypeScript configuration](tsconfig.json) uses strict checking, NodeNext mod
 
 ## Development tools
 
+Oxc tools replace Biome: Oxlint handles linting and Oxfmt handles formatting. Biome is no longer a project dependency.
+
 | Technology     | Role                                                                               |
 | -------------- | ---------------------------------------------------------------------------------- |
 | Oxfmt          | Formatting                                                                         |
@@ -27,8 +29,8 @@ The [TypeScript configuration](tsconfig.json) uses strict checking, NodeNext mod
 | `@types/node`  | Node.js types used during compilation.                                             |
 | GitHub Actions | Builds and tests on pushes and pull requests to `main`, with Node.js 26 on Ubuntu. |
 
-[npm scripts](package.json) define the local checks. `npm run check` applies lint fixes, builds, and tests. The [CI workflow](.github/workflows/tests.yml) uses
-`npm test`, not the full local check.
+[npm scripts](package.json) define the local checks. `npm run fmt` formats with Oxfmt, and `npm run lint` applies Oxlint fixes. `npm run check` runs both commands,
+builds, and tests. The [CI workflow](.github/workflows/tests.yml) uses `npm test`, not the full local check.
 
 The [test runner](tests/rule-test.ts) loads the built plugin. Fixtures live in [tests/fixtures](tests/fixtures).
 
