@@ -64,6 +64,6 @@ Scope: Test case titles, not suite names. Test-call recognition, import aliases,
 
 Completion: Tests and documentation demonstrate enforcement across test frameworks, including Playwright, and the owner accepts the behavior.
 
-Dependencies: Check native Oxlint rule coverage before implementation to avoid duplication, as required by D-01 in [Design decisions](DESIGN_DECISIONS.md).
+Dependencies: Check native Oxlint rule coverage before implementation to avoid duplication, as required by D-01 in [Architecture decision records](ADR.md).
 
 Specification: Not written. Rule name and detailed cases remain open.
