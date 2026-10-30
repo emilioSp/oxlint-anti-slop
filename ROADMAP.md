@@ -53,3 +53,17 @@ Permit `in` inside type guards and assertion functions. Reject it elsewhere. Det
 ### R-05: Reject inline object types in function parameters
 
 Require named types instead of inline object types in function parameters. Exact scope and framework exceptions remain open.
+
+### R-07: Require given/when/then test titles
+
+Problem: The current `vitest/valid-title` configuration does not enforce test titles in Playwright.
+
+Outcome: A library and framework agnostic rule requires every test title to match `^given .+ when .+ then .+$`, including Playwright tests.
+
+Scope: Test case titles, not suite names. Test-call recognition, import aliases, modifiers, parameterized tests, and dynamic titles remain to be defined before implementation.
+
+Completion: Tests and documentation demonstrate enforcement across test frameworks, including Playwright, and the owner accepts the behavior.
+
+Dependencies: Check native Oxlint rule coverage before implementation to avoid duplication, as required by D-01 in [Design decisions](DESIGN_DECISIONS.md).
+
+Specification: Not written. Rule name and detailed cases remain open.
