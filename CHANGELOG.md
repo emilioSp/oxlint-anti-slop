@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0
+
+Added [`tests-require-given-when-then`](docs/rules/tests-require-given-when-then.md), a framework-independent rule requiring `given ... when ... then ...` test case titles,
+including Playwright tests. It supports test modifiers and parameterized declarations, checks template title structure, and reports missing or unverifiable titles.
+Intentional exceptions use inline suppression, explained in the diagnostic.
+
+Updated README configurations to use the new rule instead of `vitest/valid-title`. The repository's `.oxlintrc.json` remains unchanged.
+
 ## 0.3.8
 
 Replaced Biome with Oxc tools: Oxlint for linting and Oxfmt for formatting. `npm run check` formats, lints, builds, and runs the tests.
