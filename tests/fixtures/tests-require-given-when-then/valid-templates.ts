@@ -1,0 +1,1 @@
+it(`given ${fixture.name} when the rule runs then it ${outcome}`, () => {}); test(`given a cart when checkout starts then payment opens`, () => {}); test(`\u0067iven a cart when checkout starts then payment opens`, () => {});

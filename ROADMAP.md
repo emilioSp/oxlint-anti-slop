@@ -60,10 +60,10 @@ Problem: The current `vitest/valid-title` configuration does not enforce test ti
 
 Outcome: A library and framework agnostic rule requires every test title to match `^given .+ when .+ then .+$`, including Playwright tests.
 
-Scope: Test case titles, not suite names. Test-call recognition, import aliases, modifiers, parameterized tests, and dynamic titles remain to be defined before implementation.
+Scope: Test case titles, not suite names. Recognition and title handling are defined in the approved specification.
 
 Completion: Tests and documentation demonstrate enforcement across test frameworks, including Playwright, and the owner accepts the behavior.
 
 Dependencies: Check native Oxlint rule coverage before implementation to avoid duplication, as required by D-01 in [Architecture decision records](ADR.md).
 
-Specification: Not written. Rule name and detailed cases remain open.
+Specification: [R-07](.specs/20261030-113735-require-given-when-then-test-titles/spec.md). Implementation is ready for verification.

@@ -13,6 +13,7 @@ import { noUnsafeDictionaryValuesRule } from '#rules/no-unsafe-dictionary-values
 import { requireLogicalBlankLinesRule } from '#rules/require-logical-blank-lines.js';
 import { requireTypeAssertionJustificationRule } from '#rules/require-type-assertion-justification.js';
 import { RULE_NAMES } from '#rules/rule-names.js';
+import { testsRequireGivenWhenThenRule } from '#rules/tests-require-given-when-then.js';
 
 /** Generic Oxlint rules that reject low-evidence and low-signal implementation patterns. */
 const antiSlopPlugin = eslintCompatPlugin({
@@ -26,6 +27,7 @@ const antiSlopPlugin = eslintCompatPlugin({
     [RULE_NAMES.noUnsafeDictionaryValues]: noUnsafeDictionaryValuesRule,
     [RULE_NAMES.noMeaninglessUnknownAliases]: noMeaninglessUnknownAliasesRule,
     [RULE_NAMES.noNarrowingAfterWidening]: noNarrowingAfterWideningRule,
+    [RULE_NAMES.testsRequireGivenWhenThen]: testsRequireGivenWhenThenRule,
     [RULE_NAMES.requireLogicalBlankLines]: requireLogicalBlankLinesRule,
     [RULE_NAMES.requireTypeAssertionJustification]: requireTypeAssertionJustificationRule,
   },
