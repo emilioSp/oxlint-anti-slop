@@ -19,4 +19,6 @@ Read `ROADMAP.md`, `CHANGELOG.md`, and `ADR.md`.
 
 ## Documentation
 
+Every rule MUST have a dedicated documentation file in `docs/rules/`. Keep it up to date when the rule changes. Rule documentation is for HUMANS, not agents.
+
 README.md, and all docs under /docs folder are intended for humans. Don't write them for agents. They are not.
