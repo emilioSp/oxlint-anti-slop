@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "specId": "20261030-113735-require-given-when-then-test-titles",
+  "summary": "Independently verified all 18 criteria against the live candidate. No technical findings.",
+  "acceptanceCriteria": [
+    {
+      "id": "AC1",
+      "probe": "npm test and npm run check: inspected and executed four import-source CLI fixtures; each produced exactly one approved diagnostic.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC2",
+      "probe": "npm test and npm run check: local-test and local-it fixtures each produced exactly one diagnostic.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC3",
+      "probe": "npm test and npm run check: aliases fixture covers import alias, local alias and framework.test; zero diagnostics.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC4",
+      "probe": "npm test and npm run check: inspected and executed every supported modifier on both roots and modifier-chain; one diagnostic per fixture.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC5",
+      "probe": "npm test and npm run check: all eight builder/modifier fixtures report once; standalone fixture reports none. Additional temporary CLI probes using built dist/index.js and only approved rule enabled checked all eight bare builders (8 diagnostics) and all eight standalone builders (0 diagnostics).",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC6",
+      "probe": "npm test and npm run check: test-tagged-each and it-tagged-each each report exactly once.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC7",
+      "probe": "npm test and npm run check: excluded-methods fixture includes suites, steps, extend and unknown methods; zero diagnostics.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC8",
+      "probe": "npm test and npm run check: overload, number, null and missing fixtures each report exactly once.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC9",
+      "probe": "npm test and npm run check: valid-string fixture reports no diagnostics.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC10",
+      "probe": "npm test and npm run check: wrong-case, missing-section, prefix and empty fixtures each report exactly once.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC11",
+      "probe": "npm test and npm run check: valid-templates fixture exercises interpolation, plain template and cooked Unicode escape with zero diagnostics; extract-title unit test confirms cooked:null uses matching raw text.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC12",
+      "probe": "npm test and npm run check: template-invalid and template-interpolation fixtures each report exactly once.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC13",
+      "probe": "npm test and npm run check: identifier, concatenation and function-call fixtures each report exactly once.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC14",
+      "probe": "Inspected registration in index.ts and rules/rule-names.ts; CLI fixture runner loads built plugin with only approved rule enabled and asserts exact anti-slop(tests-require-given-when-then) code for each invalid fixture. npm test and npm run check passed.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC15",
+      "probe": "Read docs/rules/tests-require-given-when-then.md; confirmed recognition, exclusions, modifiers, builders, literal/template normalization, unavailable titles, valid/invalid examples and inline suppression.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC16",
+      "probe": "Read README available rules table and followed docs/rules/tests-require-given-when-then.md link; target exists.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC17",
+      "probe": "Read both README configuration examples; both enable approved rule as error and neither configures vitest/valid-title. git diff -- .oxlintrc.json is empty.",
+      "probeStatus": "passed"
+    },
+    {
+      "id": "AC18",
+      "probe": "npm test and npm run check: suppression fixture uses approved inline disable comment on test.skip(true, 'not supported'); zero diagnostics.",
+      "probeStatus": "passed"
+    }
+  ],
+  "findings": [],
+  "notes": [
+    "Confirmed matching specId and verifier-running phase; read approved documents and B1. No design prototypes or earlier handoffs were present.",
+    "Before autofix-capable repository check, non-mutating oxfmt --check and oxlint succeeded. npm test and npm run check each passed 157 tests in 12 files.",
+    "Retained file contents before npm run check; comparison found no changed or created files. Additional CLI probes used an automatically removed temporary directory. Existing candidate changes were preserved."
+  ]
+}

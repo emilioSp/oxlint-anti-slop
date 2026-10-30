@@ -85,6 +85,7 @@ Create `.oxlintrc.json` in the project root with the complete plugin configurati
     "anti-slop/no-unsafe-dictionary-values": "error",
     "anti-slop/no-narrowing-after-widening": "error",
     "anti-slop/require-type-assertion-justification": "error",
+    "anti-slop/tests-require-given-when-then": "error",
     "anti-slop/require-logical-blank-lines": "error"
   }
 }
@@ -115,7 +116,7 @@ export function parseLegacyPayload(value: object): object {
 
 ### Suggested configuration
 
-This optional configuration combines all anti-slop rules with five native Oxlint rules. The native rules are separate from this plugin.
+This optional configuration combines all anti-slop rules with four native Oxlint rules. The native rules are separate from this plugin.
 
 All native categories are set to `off`, so only the listed rules are enabled. Adjust `ignorePatterns` to match your project.
 
@@ -155,16 +156,6 @@ All native categories are set to `off`, so only the listed rules are enabled. Ad
     "vendor/**"
   ],
   "rules": {
-    "vitest/valid-title": [
-      "error",
-      {
-        "ignoreTypeOfDescribeName": true,
-        "mustMatch": {
-          "it": "^given .+ when .+ then .+$",
-          "test": "^given .+ when .+ then .+$"
-        }
-      }
-    ],
     "prefer-const": "error",
     "no-else-return": ["error", { "allowElseIf": false }],
     "typescript/consistent-type-definitions": ["error", "type"],
@@ -184,6 +175,7 @@ All native categories are set to `off`, so only the listed rules are enabled. Ad
     "anti-slop/no-meaningless-unknown-aliases": "error",
     "anti-slop/no-unsafe-dictionary-values": "error",
     "anti-slop/no-narrowing-after-widening": "error",
+    "anti-slop/tests-require-given-when-then": "error",
     "anti-slop/require-logical-blank-lines": "error",
     "anti-slop/require-type-assertion-justification": "error"
   }
@@ -221,6 +213,7 @@ your project and set the others to `off`.
 | [`no-typeof-outside-guards`](docs/rules/no-typeof-outside-guards.md)                         | Runtime `typeof` checks must live in named type guards, except for existence probes. |
 | [`require-type-assertion-justification`](docs/rules/require-type-assertion-justification.md) | Non-const type assertions must explain the invariant they rely on.                   |
 | [`require-logical-blank-lines`](docs/rules/require-logical-blank-lines.md)                   | Logical declarations and statement groups must have readable spacing.                |
+| [`tests-require-given-when-then`](docs/rules/tests-require-given-when-then.md)               | Test case titles must follow the given, when, then structure.                        |
 
 ## Limitations
 

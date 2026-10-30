@@ -9,6 +9,7 @@ export const RULE_NAMES = {
   noUnsafeDictionaryValues: 'no-unsafe-dictionary-values',
   noMeaninglessUnknownAliases: 'no-meaningless-unknown-aliases',
   noNarrowingAfterWidening: 'no-narrowing-after-widening',
+  testsRequireGivenWhenThen: 'tests-require-given-when-then',
   requireLogicalBlankLines: 'require-logical-blank-lines',
   requireTypeAssertionJustification: 'require-type-assertion-justification',
 } as const;
