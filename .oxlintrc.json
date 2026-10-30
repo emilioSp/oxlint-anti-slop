@@ -3,7 +3,7 @@
   "categories": {
     "correctness": "error"
   },
-  "plugins": ["typescript", "import"],
+  "plugins": ["typescript", "import", "vitest"],
   "jsPlugins": [
     {
       "name": "anti-slop",
