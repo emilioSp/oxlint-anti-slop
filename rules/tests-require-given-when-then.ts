@@ -19,7 +19,7 @@ const modifiers = new Set([
 
 const builders = new Set(['each', 'for', 'skipIf', 'runIf']);
 
-const titlePattern = /^given .+ when .+ then .+$/;
+const titlePattern = /^GIVEN .+ WHEN .+ THEN .+$/;
 
 // Recognize `test`, `it`, or modifier chains such as `test.concurrent.only`.
 const isTestFunctionOrModifier = (node: ESTree.Node): boolean => {
@@ -56,10 +56,10 @@ const isTestDeclaration = (callee: ESTree.Node): boolean => {
 export const testsRequireGivenWhenThenRule = defineRule({
   meta: {
     type: 'problem',
-    docs: { description: 'Require given, when, then test case titles.' },
+    docs: { description: 'Require uppercase GIVEN, WHEN, THEN test case titles.' },
     messages: {
       title:
-        'Use a test title matching "given ... when ... then ...". If this format is not possible, explicitly disable this rule inline with `// oxlint-disable-next-line anti-slop/tests-require-given-when-then`.',
+        'Use a test title matching "GIVEN ... WHEN ... THEN ...". If this format is not possible, explicitly disable this rule inline with `// oxlint-disable-next-line anti-slop/tests-require-given-when-then`.',
     },
   },
   createOnce: (context) => ({

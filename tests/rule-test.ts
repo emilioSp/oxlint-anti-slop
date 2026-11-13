@@ -103,6 +103,7 @@ type RuleTestInput = {
 
 /** Define CLI integration tests for one rule and its versioned fixtures. */
 export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
+  // oxlint-disable-next-line vitest/valid-title -- The suite title is the rule name supplied by each integration test.
   describe(ruleName, () => {
     let configPath: string | null = null;
 
@@ -124,7 +125,7 @@ export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
     });
 
     for (const fixture of fixtures) {
-      it(`given ${fixture.name} when the rule runs then it ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
+      it(`GIVEN ${fixture.name} WHEN the rule runs THEN it ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
         if (configPath === null) throw new Error('Oxlint configuration was not created');
 
         const fixturePath = resolve(PROJECT_ROOT, 'tests/fixtures', ruleName, `${fixture.name}.ts`);

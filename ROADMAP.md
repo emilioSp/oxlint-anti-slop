@@ -58,7 +58,7 @@ Require named types instead of inline object types in function parameters. Exact
 
 Problem: The current `vitest/valid-title` configuration does not enforce test titles in Playwright.
 
-Outcome: A library and framework agnostic rule requires every test title to match `^given .+ when .+ then .+$`, including Playwright tests.
+Outcome: A library and framework agnostic rule requires every test title to match `^GIVEN .+ WHEN .+ THEN .+$`, including Playwright tests.
 
 Scope: Test case titles, not suite names. Recognition and title handling are defined in the approved specification.
 
@@ -66,4 +66,5 @@ Completion: Tests and documentation demonstrate enforcement across test framewor
 
 Dependencies: Check native Oxlint rule coverage before implementation to avoid duplication, as required by D-01 in [Architecture decision records](ADR.md).
 
-Specification: [R-07](.specs/20261030-113735-require-given-when-then-test-titles/spec.md). Implementation is ready for verification.
+Specification: [R-07](.specs/20261030-113735-require-given-when-then-test-titles/spec.md). Implementation is ready for verification. The owner subsequently required
+uppercase `GIVEN`, `WHEN`, and `THEN`; `and` has no case requirement. This supersedes the lowercase pattern in the original specification.

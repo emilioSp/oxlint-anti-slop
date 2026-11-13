@@ -48,6 +48,7 @@ testRule({
     { name: 'null', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'missing', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'wrong-case', expectedCode: `anti-slop(${RULE_NAME})` },
+    { name: 'mixed-case-given', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'missing-section', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'prefix', expectedCode: `anti-slop(${RULE_NAME})` },
     { name: 'empty', expectedCode: `anti-slop(${RULE_NAME})` },
@@ -61,6 +62,9 @@ testRule({
     { name: 'excluded-methods', expectedCode: null },
     { name: 'valid-string', expectedCode: null },
     { name: 'valid-templates', expectedCode: null },
+    { name: 'valid-template-without-interpolation', expectedCode: null },
+    { name: 'valid-escaped-template', expectedCode: null },
+    { name: 'valid-lowercase-and', expectedCode: null },
     { name: 'suppression', expectedCode: null },
   ],
 });

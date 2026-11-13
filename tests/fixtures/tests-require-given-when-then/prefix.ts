@@ -1,1 +1,1 @@
-test('prefix given a cart when checkout starts then payment opens', () => {});
+test('prefix GIVEN a cart WHEN checkout starts THEN payment opens', () => {});
