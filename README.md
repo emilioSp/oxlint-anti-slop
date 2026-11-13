@@ -213,7 +213,7 @@ your project and set the others to `off`.
 | [`no-typeof-outside-guards`](docs/rules/no-typeof-outside-guards.md)                         | Runtime `typeof` checks must live in named type guards, except for existence probes. |
 | [`require-type-assertion-justification`](docs/rules/require-type-assertion-justification.md) | Non-const type assertions must explain the invariant they rely on.                   |
 | [`require-logical-blank-lines`](docs/rules/require-logical-blank-lines.md)                   | Logical declarations and statement groups must have readable spacing.                |
-| [`tests-require-given-when-then`](docs/rules/tests-require-given-when-then.md)               | Test case titles must follow the given, when, then structure.                        |
+| [`tests-require-given-when-then`](docs/rules/tests-require-given-when-then.md)               | Test case titles must follow the uppercase GIVEN, WHEN, THEN structure.              |
 
 ## Limitations
 

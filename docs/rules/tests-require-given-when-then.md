@@ -1,13 +1,14 @@
-# Require given/when/then test titles
+# Require GIVEN/WHEN/THEN test titles
 
-Test case titles must match `^given .+ when .+ then .+$`. The keywords are case-sensitive, and the title is not trimmed.
+Test case titles must match `^GIVEN .+ WHEN .+ THEN .+$`. These three keywords must be uppercase, and the title is not trimmed. There is no case requirement for `and`.
 
 ```ts
 // Invalid
-test('loads the page', () => {});
+test('given a cart when checkout starts then payment opens', () => {});
 
 // Valid
-test('given a cart when checkout starts then payment opens', () => {});
+test('GIVEN a cart WHEN checkout starts THEN payment opens', () => {});
+test('GIVEN a cart and an address WHEN checkout starts THEN payment opens', () => {});
 ```
 
 The rule checks calls rooted at `test` or `it` regardless of imports or local bindings. It does not follow aliases or check object methods such as `framework.test`. It
