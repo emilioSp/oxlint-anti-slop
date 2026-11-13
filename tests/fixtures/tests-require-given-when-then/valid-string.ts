@@ -1,1 +1,1 @@
-test('given a cart when checkout starts then payment opens', () => {});
+test('GIVEN a cart WHEN checkout starts THEN payment opens', () => {});

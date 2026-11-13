@@ -8,16 +8,53 @@ const RULE_NAME = RULE_NAMES.noMeaninglessUnknownAliases;
 testRule({
   ruleName: RULE_NAME,
   fixtures: [
-    { name: 'unknown-alias', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'validated-webhook-boundary', expectedCode: null },
-    { name: 'unknown-union', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'parenthesized-unknown', expectedCode: `anti-slop(${RULE_NAME})` },
+    {
+      name: 'unknown-alias',
+      description: 'a type alias for unknown',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
+    {
+      name: 'validated-webhook-boundary',
+      description: 'an unknown webhook input validated before use',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'unknown-union',
+      description: 'a type alias for a union containing unknown',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
+    {
+      name: 'parenthesized-unknown',
+      description: 'a type alias for parenthesized unknown',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
     {
       name: 'generic-alias-instantiation',
-      expectedCode: `anti-slop(${RULE_NAME})`,
+      description: 'a generic identity alias instantiated with unknown',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
     },
-    { name: 'unknown-property', expectedCode: null },
-    { name: 'unknown-array', expectedCode: null },
-    { name: 'unknown-intersection', expectedCode: null },
+    {
+      name: 'unknown-property',
+      description: 'a named object type with an unknown property',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'unknown-array',
+      description: 'a type alias for an array of unknown values',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'unknown-intersection',
+      description: 'unknown intersected with a structured type',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
   ],
 });

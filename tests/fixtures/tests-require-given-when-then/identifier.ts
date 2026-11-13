@@ -1,1 +1,1 @@
-const title = 'given a cart when checkout starts then payment opens'; test(title, () => {});
+const title = 'GIVEN a cart WHEN checkout starts THEN payment opens'; test(title, () => {});
