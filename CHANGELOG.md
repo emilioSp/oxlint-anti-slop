@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+Lint compatibility change: [`tests-require-given-when-then`](docs/rules/tests-require-given-when-then.md) now requires uppercase `GIVEN ... WHEN ... THEN ...` keywords.
+
 ## 0.4.0
 
 Added [`tests-require-given-when-then`](docs/rules/tests-require-given-when-then.md), a framework-independent rule requiring `given ... when ... then ...` test case
