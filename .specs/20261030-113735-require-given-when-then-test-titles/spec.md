@@ -50,22 +50,23 @@ Verified by: [AC4](#ac4-supported-modifiers-and-chains-are-checked), [AC5](#ac5-
 
 #### AC4: Supported modifiers and chains are checked
 
-1. Probe: Lint an invalid string title through each supported modifier on both roots and through a modifier chain.
+1. Probe: Lint an invalid string title through each supported modifier once, with representative coverage for both roots and a modifier chain. Do not require every
+   modifier/root combination.
 2. Expected result: Exactly one title-format diagnostic per declaration.
 3. Example: Lint `it.concurrent.only('loads the page', () => {});` and receive exactly one title-format diagnostic. The same result is required for each supported
    modifier individually.
 
 #### AC5: Supported builders are checked
 
-1. Probe: Lint invalid final titles through `each`, `for`, `skipIf`, and `runIf` on both roots, including combinations with modifiers. Separately lint builder calls
-   without final declarations.
+1. Probe: Lint invalid final titles through each of `each`, `for`, `skipIf`, and `runIf` once, with representative coverage for both roots and combinations with
+   modifiers. Separately lint builder calls without final declarations.
 2. Expected result: Exactly one title-format diagnostic per final declaration and none on builder arguments or standalone builders.
 3. Example: Lint `test.each(['one', 'two'])('loads %s', () => {});` and receive exactly one title-format diagnostic. Lint `test.each(['one', 'two']);` and receive none.
    The same declaration-only behavior applies to `it.only.for(['one'])('loads the page', () => {});` and `test.skipIf(true)('loads the page', () => {});`.
 
 #### AC6: Tagged each titles are checked
 
-1. Probe: Lint a tagged-template `each` declaration with an invalid final title, separately on both roots.
+1. Probe: Lint a representative tagged-template `each` declaration with an invalid final title; both roots are covered by the other declaration tests.
 2. Expected result: Exactly one title-format diagnostic on the final declaration.
 3. Example: Lint ``test.each`item\n${'one'}`('loads $item', () => {});`` and receive exactly one title-format diagnostic.
 

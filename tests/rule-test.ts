@@ -26,7 +26,9 @@ const CATEGORIES = {
 
 type Fixture = {
   readonly name: string;
-  readonly expectedCode: string | null;
+  readonly description: string;
+  readonly expectedExitCode: 0 | 1;
+  readonly expectedCodes: readonly string[];
 };
 
 type OxlintDiagnostic = {
@@ -124,30 +126,18 @@ export const testRule = ({ ruleName, fixtures }: RuleTestInput): void => {
       await rm(dirname(configPath), { recursive: true, force: true });
     });
 
-    for (const fixture of fixtures) {
-      it(`GIVEN ${fixture.name} WHEN the rule runs THEN it ${fixture.expectedCode === null ? 'reports no diagnostics' : 'reports exactly one violation'}`, async () => {
+    it.each(fixtures)(
+      'GIVEN $description WHEN linting THEN diagnostic count is $expectedCodes.length',
+      async ({ name, expectedExitCode, expectedCodes }) => {
         if (configPath === null) throw new Error('Oxlint configuration was not created');
 
-        const fixturePath = resolve(PROJECT_ROOT, 'tests/fixtures', ruleName, `${fixture.name}.ts`);
+        const fixturePath = resolve(PROJECT_ROOT, 'tests/fixtures', ruleName, `${name}.ts`);
 
         const result = await runOxlint({ configPath, fixturePath });
 
-        if (fixture.expectedCode === null) {
-          // oxlint-disable-next-line vitest/no-conditional-expect
-          expect(result.exitCode).toBe(0);
-
-          // oxlint-disable-next-line vitest/no-conditional-expect
-          expect(result.diagnostics).toEqual([]);
-
-          return;
-        }
-
-        expect(result.exitCode).toBe(1);
-
-        expect(result.diagnostics).toHaveLength(1);
-
-        expect(result.diagnostics[0]?.code).toBe(fixture.expectedCode);
-      });
-    }
+        expect(result.exitCode).toBe(expectedExitCode);
+        expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toEqual(expectedCodes);
+      },
+    );
   });
 };

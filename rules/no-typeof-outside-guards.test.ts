@@ -8,23 +8,59 @@ const RULE_NAME = RULE_NAMES.noTypeofOutsideGuards;
 testRule({
   ruleName: RULE_NAME,
   fixtures: [
-    { name: 'inline-typeof-check', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'named-type-guard', expectedCode: null },
-    { name: 'existence-probe', expectedCode: null },
-    { name: 'reversed-existence-probe', expectedCode: null },
-    { name: 'type-query', expectedCode: null },
-    { name: 'assertion-function', expectedCode: null },
+    {
+      name: 'inline-typeof-check',
+      description: 'a runtime typeof check outside a type guard',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
+    {
+      name: 'named-type-guard',
+      description: 'a runtime typeof check inside a named type guard',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'existence-probe',
+      description: 'a typeof expression compared with the string undefined',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'reversed-existence-probe',
+      description: 'the string undefined compared with a typeof expression',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'type-query',
+      description: 'a TypeScript typeof type query',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'assertion-function',
+      description: 'a runtime typeof check inside an assertion function',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
     {
       name: 'boolean-return-is-not-guard',
-      expectedCode: `anti-slop(${RULE_NAME})`,
+      description: 'a typeof check inside a function returning boolean',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
     },
     {
       name: 'nested-callback-is-not-guard',
-      expectedCode: `anti-slop(${RULE_NAME})`,
+      description: 'a typeof check inside a callback nested in a type guard',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
     },
     {
       name: 'undefined-value-is-not-existence-probe',
-      expectedCode: `anti-slop(${RULE_NAME})`,
+      description: 'a typeof expression compared with the value undefined',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
     },
   ],
 });

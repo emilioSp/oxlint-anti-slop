@@ -8,18 +8,47 @@ const RULE_NAME = RULE_NAMES.noChainedTypeAssertions;
 testRule({
   ruleName: RULE_NAME,
   fixtures: [
-    { name: 'chained-type-assertion', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'parenthesized-chain', expectedCode: `anti-slop(${RULE_NAME})` },
-    { name: 'angle-bracket-chain', expectedCode: `anti-slop(${RULE_NAME})` },
+    {
+      name: 'chained-type-assertion',
+      description: 'a payload asserted through unknown to a domain type',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
+    {
+      name: 'parenthesized-chain',
+      description: 'a parenthesized assertion chain',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
+    {
+      name: 'angle-bracket-chain',
+      description: 'an angle-bracket assertion chain',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
+    },
     {
       name: 'triple-chain-reported-once',
-      expectedCode: `anti-slop(${RULE_NAME})`,
+      description: 'three chained type assertions',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
     },
     {
       name: 'const-then-domain-assertion',
-      expectedCode: `anti-slop(${RULE_NAME})`,
+      description: 'a const assertion followed by a domain assertion',
+      expectedExitCode: 1,
+      expectedCodes: [`anti-slop(${RULE_NAME})`],
     },
-    { name: 'const-assertion', expectedCode: null },
-    { name: 'independent-assertions', expectedCode: null },
+    {
+      name: 'const-assertion',
+      description: 'a standalone const assertion',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
+    {
+      name: 'independent-assertions',
+      description: 'two independent type assertions',
+      expectedExitCode: 0,
+      expectedCodes: [],
+    },
   ],
 });

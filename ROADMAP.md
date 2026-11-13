@@ -68,3 +68,6 @@ Dependencies: Check native Oxlint rule coverage before implementation to avoid d
 
 Specification: [R-07](.specs/20261030-113735-require-given-when-then-test-titles/spec.md). Implementation is ready for verification. The owner subsequently required
 uppercase `GIVEN`, `WHEN`, and `THEN`; `and` has no case requirement. This supersedes the lowercase pattern in the original specification.
+
+Verification uses descriptive parameterized cases and representative modifier/builder combinations rather than a full root-by-variant matrix. The owner approved this test
+simplification; AC4–AC6 in the specification reflect it.
